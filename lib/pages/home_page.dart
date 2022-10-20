@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:library_management/pages/login_page.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -17,14 +18,14 @@ class HomePage extends StatelessWidget {
           children: [
             ElevatedButton(
               onPressed: (){
-
+                Navigator.pushNamed(context, LoginPage.routeName);
               },
               child: const Text('User Panel'),
             ),
             const SizedBox(height: 10,),
             ElevatedButton(
               onPressed: (){
-
+                Navigator.pushNamed(context, LoginPage.routeName);
               },
               child: const Text('Admin Panel'),
             ),
