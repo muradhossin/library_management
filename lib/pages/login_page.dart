@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:library_management/pages/admin_signup.dart';
+import 'package:library_management/pages/user_signup.dart';
 
 class LoginPage extends StatelessWidget {
   const LoginPage({Key? key}) : super(key: key);
@@ -55,7 +57,7 @@ class LoginPage extends StatelessWidget {
                   padding: const EdgeInsets.all(8.0),
                   child: ElevatedButton(
                     onPressed: (){
-
+                      Navigator.pushNamed(context, AdminSignup.routeName);
                     },
                     child: const Text('Create new account'),
                   ),
