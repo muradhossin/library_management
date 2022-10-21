@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:library_management/pages/admin_signup.dart';
-import 'package:library_management/pages/user_signup.dart';
+import 'package:library_management/pages/admin/admin_signup.dart';
+import 'package:library_management/pages/user/user_signup.dart';
 
 class LoginPage extends StatelessWidget {
   const LoginPage({Key? key}) : super(key: key);
