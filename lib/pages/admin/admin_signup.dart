@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:library_management/pages/admin/admin_login_page.dart';
 
 import '../login_page.dart';
 
@@ -122,7 +123,7 @@ class _AdminSignupState extends State<AdminSignup> {
               padding: const EdgeInsets.all(8.0),
               child: ElevatedButton(
                 onPressed: (){
-                  Navigator.pushNamed(context, LoginPage.routeName);
+                  Navigator.pushNamed(context, AdminLoginPage.routeName);
                 },
                 child: const Text("Sign Up"),
               ),

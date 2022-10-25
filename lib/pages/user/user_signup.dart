@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:library_management/pages/home_page.dart';
 import 'package:library_management/pages/login_page.dart';
+import 'package:library_management/pages/user/user_login_page.dart';
 
 class UserSignup extends StatefulWidget {
   const UserSignup({Key? key}) : super(key: key);
@@ -166,7 +167,7 @@ class _UserSignupState extends State<UserSignup> {
               padding: const EdgeInsets.all(8.0),
               child: ElevatedButton(
                 onPressed: (){
-                  Navigator.pushNamed(context, LoginPage.routeName);
+                  Navigator.pushNamed(context, UserLoginPage.routeName);
                 },
                 child: const Text("Sign Up"),
               ),

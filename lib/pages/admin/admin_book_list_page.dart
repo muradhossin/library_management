@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:library_management/pages/admin/admin_book_info_page.dart';
 
 class AdminBookListPage extends StatelessWidget {
   const AdminBookListPage({Key? key}) : super(key: key);
@@ -25,6 +26,9 @@ class AdminBookListPage extends StatelessWidget {
               shape: Border.all(color: Colors.blue.shade300, width: 1),
               shadowColor: Colors.blueGrey,
               child: ListTile(
+                onTap: (){
+                  Navigator.pushNamed(context, AdminBookInfoPage.routeName);
+                },
                 leading: Image.asset('images/1.jpg'),
                 title: const Text('Pother Pachali'),
                 subtitle: const Text(
@@ -47,6 +51,9 @@ class AdminBookListPage extends StatelessWidget {
               shape: Border.all(color: Colors.blue.shade300, width: 1),
               shadowColor: Colors.blueGrey,
               child: ListTile(
+                onTap: (){
+                  Navigator.pushNamed(context, AdminBookInfoPage.routeName);
+                },
                 leading: Image.asset('images/2.jpg'),
                 title: const Text('Himu Rimande'),
                 subtitle: const Text('Author: Humayan Ahmed Category: Fiction'),

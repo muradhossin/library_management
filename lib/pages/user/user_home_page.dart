@@ -1,6 +1,7 @@
 import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/material.dart';
 import 'package:carousel_slider/carousel_slider.dart';
+import 'package:library_management/pages/user/book_info_page.dart';
 
 class UserHomePage extends StatefulWidget {
   const UserHomePage({Key? key}) : super(key: key);
@@ -155,19 +156,24 @@ class _UserHomePageState extends State<UserHomePage> {
               elevation: 2,
               shape: Border.all(color: Colors.blue.shade300, width: 1),
               shadowColor: Colors.blueGrey,
-              child: ListTile(
-                leading:  Image.asset('images/1.jpg'),
-                title: Text('Pother Pachali'),
-                subtitle:
-                    Text('Author: Bivutibushon Bondhopaddhoy Category: Fiction'),
-                trailing: Row(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Icon(Icons.star_rate),
-                    Text('4.5'),
-                  ],
-                ),
-                ),
+              child: InkWell(
+                onTap: (){
+                  Navigator.pushNamed(context, BookInfoPage.routeName);
+                },
+                child: ListTile(
+                  leading:  Image.asset('images/1.jpg'),
+                  title: Text('Pother Pachali'),
+                  subtitle:
+                      Text('Author: Bivutibushon Bondhopaddhoy Category: Fiction'),
+                  trailing: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Icon(Icons.star_rate),
+                      Text('4.5'),
+                    ],
+                  ),
+                  ),
+              ),
             ),
             Card(
               elevation: 2,
