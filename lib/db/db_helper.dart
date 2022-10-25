@@ -78,5 +78,33 @@ class DbHelper{
     return db.insert(createTableAdmin, bookingModel.toMap());
   }
 
+  static Future<UserModel?> getUserByEmail(String email) async {
+    final db = await open();
+    final mapList = await db.query(tableUser, where: '$tblUserColEmail = ?', whereArgs: [email]);
+    if(mapList.isEmpty) return null;
+    return UserModel.fromMap(mapList.first);
+  }
+
+  static Future<UserModel> getUserById(int id) async {
+    final db = await open();
+    final mapList = await db.query(tableUser,
+      where: '$tblUserColId = ?', whereArgs: [id],);
+    return UserModel.fromMap(mapList.first);
+  }
+
+  static Future<AdminModel?> getAdminByEmail(String email) async {
+    final db = await open();
+    final mapList = await db.query(tableAdmin, where: '$tblAdminColEmail = ?', whereArgs: [email]);
+    if(mapList.isEmpty) return null;
+    return AdminModel.fromMap(mapList.first);
+  }
+
+  static Future<AdminModel> getAdminById(int id) async {
+    final db = await open();
+    final mapList = await db.query(tableAdmin,
+      where: '$tblAdminColId = ?', whereArgs: [id],);
+    return AdminModel.fromMap(mapList.first);
+  }
+
 
 }

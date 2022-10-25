@@ -1,4 +1,4 @@
-const String tableAdmin = 'tbl_model';
+const String tableAdmin = 'tbl_admin';
 const String tblAdminColId = 'admin_id';
 const String tblAdminColName = 'name';
 const String tblAdminColEmail = 'email';
