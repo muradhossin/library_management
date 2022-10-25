@@ -15,7 +15,7 @@ import 'package:library_management/pages/user/user_signup.dart';
 void main(){
   runApp(MaterialApp(
     debugShowCheckedModeBanner: false,
-    initialRoute: AdminBookListPage.routeName,
+    initialRoute: HomePage.routeName,
     routes: {
       HomePage.routeName: (context) => HomePage(),
       LoginPage.routeName: (context) => LoginPage(),

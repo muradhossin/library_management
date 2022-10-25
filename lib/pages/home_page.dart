@@ -12,22 +12,54 @@ class HomePage extends StatelessWidget {
       appBar: AppBar(
         title: const Text('Home Page'),
       ),
-      body: Center(
+      body: Container(
+        height: double.infinity,
+        width: double.infinity,
+        decoration: BoxDecoration(
+          image: DecorationImage(
+            image: AssetImage('images/img5.jpg'),
+            fit: BoxFit.cover,
+          )
+        ),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            ElevatedButton(
-              onPressed: (){
-                Navigator.pushNamed(context, LoginPage.routeName);
-              },
-              child: const Text('User Panel'),
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                 primary : Colors.blueGrey,
+                  side: BorderSide(color: Colors.amber, width: 1),
+                  textStyle: const TextStyle(
+                      color: Colors.white, fontSize: 20, fontStyle: FontStyle.normal),
+                  shape: BeveledRectangleBorder(
+                      borderRadius: BorderRadius.all(Radius.circular(10))),
+
+                ),
+                onPressed: (){
+                  Navigator.pushNamed(context, LoginPage.routeName);
+                },
+                child: const Text('User Panel'),
+              ),
             ),
             const SizedBox(height: 10,),
-            ElevatedButton(
-              onPressed: (){
-                Navigator.pushNamed(context, LoginPage.routeName);
-              },
-              child: const Text('Admin Panel'),
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  primary : Colors.blueGrey,
+                  side: BorderSide(color: Colors.amber, width: 1),
+                  textStyle: const TextStyle(
+                      color: Colors.white, fontSize: 20, fontStyle: FontStyle.normal),
+                  shape: BeveledRectangleBorder(
+                      borderRadius: BorderRadius.all(Radius.circular(10))),
+
+                ),
+                onPressed: (){
+                  Navigator.pushNamed(context, LoginPage.routeName);
+                },
+                child: const Text('Admin Panel'),
+              ),
             ),
           ],
         ),

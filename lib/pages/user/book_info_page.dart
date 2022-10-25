@@ -1,6 +1,7 @@
 import 'package:comment_box/comment/comment.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
+import 'package:library_management/pages/user/booking_book_page.dart';
 
 class BookInfoPage extends StatelessWidget {
   const BookInfoPage({Key? key}) : super(key: key);
@@ -66,7 +67,9 @@ class BookInfoPage extends StatelessWidget {
             width: 15,
           ),
           IconButton(
-            onPressed: () {},
+            onPressed: () {
+              Navigator.pushNamed(context, BookingBookPage.routeName);
+            },
             icon: const Icon(Icons.shopping_cart),
           ),
           Builder(

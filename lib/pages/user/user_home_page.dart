@@ -1,6 +1,7 @@
 import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/material.dart';
 import 'package:carousel_slider/carousel_slider.dart';
+import 'package:library_management/pages/user/book_info_page.dart';
 
 class UserHomePage extends StatefulWidget {
   const UserHomePage({Key? key}) : super(key: key);
@@ -156,6 +157,9 @@ class _UserHomePageState extends State<UserHomePage> {
               shape: Border.all(color: Colors.blue.shade300, width: 1),
               shadowColor: Colors.blueGrey,
               child: ListTile(
+                onTap: (){
+                  Navigator.pushNamed(context, BookInfoPage.routeName);
+                },
                 leading:  Image.asset('images/1.jpg'),
                 title: Text('Pother Pachali'),
                 subtitle:
