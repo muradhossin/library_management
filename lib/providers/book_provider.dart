@@ -26,4 +26,7 @@ class BookProvider extends ChangeNotifier{
   Future<BookModel> getBookById(int id){
     return DbHelper.getBookById(id);
   }
+  BookModel getItem(int id){
+    return bookList.firstWhere((element) => element.bookId == id);
+  }
 }

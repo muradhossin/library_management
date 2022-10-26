@@ -1,17 +1,24 @@
 import 'package:flutter/material.dart';
+import 'package:library_management/models/book_model.dart';
 import 'package:library_management/utils/constants.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:provider/provider.dart';
 import 'dart:io';
+
+import '../../providers/book_provider.dart';
+import '../../utils/helper_functions.dart';
 
 class NewBookAdd extends StatefulWidget {
   const NewBookAdd({Key? key}) : super(key: key);
 
   static const String routeName = '/newbookadd';
+
   @override
   State<NewBookAdd> createState() => _NewBookAddState();
 }
 
 class _NewBookAddState extends State<NewBookAdd> {
+  late BookProvider bookProvider;
   final _formKey = GlobalKey<FormState>();
   final titleController = TextEditingController();
   final authorNameController = TextEditingController();
@@ -20,16 +27,25 @@ class _NewBookAddState extends State<NewBookAdd> {
   String? selectedType;
   String? imagePath;
   int? id;
+
+  @override
+  void didChangeDependencies() {
+    id = ModalRoute.of(context)!.settings.arguments as int?;
+    bookProvider = Provider.of<BookProvider>(context, listen: false);
+    if(id != null){
+      final book = bookProvider.getItem(id!);
+      _setData(book);
+    }
+    super.didChangeDependencies();
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(id == null ? 'Add New Movie' : 'Update Movie'),
+        title: Text(id == null ? 'Add New Book' : 'Update Book'),
         actions: [
           IconButton(
-            onPressed: (){
-
-            },
+            onPressed: saveBook,
             icon: Icon(id == null ? Icons.save : Icons.update),
           )
         ],
@@ -47,7 +63,7 @@ class _NewBookAddState extends State<NewBookAdd> {
                       border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(6),
                           borderSide:
-                          BorderSide(color: Colors.blue, width: 1))),
+                              BorderSide(color: Colors.blue, width: 1))),
                   validator: (value) {
                     if (value == null || value.isEmpty) {
                       return 'This field must not be empty';
@@ -65,7 +81,7 @@ class _NewBookAddState extends State<NewBookAdd> {
                       border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(6),
                           borderSide:
-                          BorderSide(color: Colors.blue, width: 1))),
+                              BorderSide(color: Colors.blue, width: 1))),
                   validator: (value) {
                     if (value == null || value.isEmpty) {
                       return 'This field must not be empty';
@@ -81,7 +97,7 @@ class _NewBookAddState extends State<NewBookAdd> {
                         border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(6),
                             borderSide:
-                            BorderSide(color: Colors.blue, width: 1))),
+                                BorderSide(color: Colors.blue, width: 1))),
                     hint: Text('Select Book Category'),
                     items: bookCategoryList
                         .map((e) => DropdownMenuItem(value: e, child: Text(e!)))
@@ -108,7 +124,7 @@ class _NewBookAddState extends State<NewBookAdd> {
                       border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(6),
                           borderSide:
-                          BorderSide(color: Colors.blue, width: 1))),
+                              BorderSide(color: Colors.blue, width: 1))),
                   validator: (value) {
                     if (value == null || value.isEmpty) {
                       return 'This field must not be empty';
@@ -117,7 +133,6 @@ class _NewBookAddState extends State<NewBookAdd> {
                   },
                 ),
               ),
-
               Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: Row(
@@ -125,15 +140,15 @@ class _NewBookAddState extends State<NewBookAdd> {
                   children: [
                     imagePath == null
                         ? const Icon(
-                      Icons.movie,
-                      size: 100,
-                    )
+                            Icons.movie,
+                            size: 100,
+                          )
                         : Image.file(
-                      File(imagePath!),
-                      width: 100,
-                      height: 100,
-                      fit: BoxFit.cover,
-                    ),
+                            File(imagePath!),
+                            width: 100,
+                            height: 100,
+                            fit: BoxFit.cover,
+                          ),
                     TextButton.icon(
                       onPressed: getImage,
                       icon: const Icon(Icons.photo),
@@ -147,12 +162,53 @@ class _NewBookAddState extends State<NewBookAdd> {
     );
   }
 
-  void getImage() async{
+  void getImage() async {
     final file = await ImagePicker().pickImage(source: ImageSource.gallery);
-    if(file != null){
+    if (file != null) {
       setState(() {
         imagePath = file.path;
       });
     }
+  }
+
+  void saveBook() {
+    if (imagePath == null) {
+      showMsg(context, 'Please select an image');
+      return;
+    }
+
+    if (_formKey.currentState!.validate()) {
+      final book = BookModel(
+        title: titleController.text,
+        authorName: authorNameController.text,
+        category: selectedType!,
+        description: descriptionController.text,
+        image: imagePath!,
+      );
+      if(id != null){
+        book.bookId = id;
+        bookProvider.updateBook(book).then((value) {
+          bookProvider.getAllBooks();
+          Navigator.pop(context);
+        }).catchError((onError){
+          print(onError.toString());
+        });
+      }else{
+        bookProvider.insertBook(book).then((value) {
+          bookProvider.getAllBooks();
+          Navigator.pop(context);
+        }).catchError((onError){
+          print(onError.toString());
+        });
+      }
+    }
+  }
+
+  void _setData(BookModel book) {
+    titleController.text = book.title;
+    authorNameController.text = book.authorName;
+    selectedType = book.category;
+    descriptionController.text = book.description;
+    imagePath = book.image;
   }
 }

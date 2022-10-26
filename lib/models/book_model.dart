@@ -13,7 +13,6 @@ class BookModel {
   String authorName;
   String category;
   String description;
-  String rating;
   String image;
 
   BookModel({
@@ -22,7 +21,6 @@ class BookModel {
     required this.authorName,
     required this.category,
     required this.description,
-    required this.rating,
     required this.image,
   });
 
@@ -32,7 +30,6 @@ class BookModel {
       tblBookColAuthorName: authorName,
       tblBookColCategory: category,
       tblBookColDescription: description,
-      tblBookColRating: rating,
       tblBookColImage: image,
 
     };
@@ -48,7 +45,6 @@ class BookModel {
     authorName: map[tblBookColAuthorName],
     category: map[tblBookColCategory],
     description: map[tblBookColDescription],
-    rating: map[tblBookColRating],
     image: map[tblBookColImage],
   );
 }

@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 Future<bool> setUserLoginStatus(bool status) async{
@@ -33,3 +34,6 @@ Future<int> getAdminId() async {
   return pref.getInt(adminId) ?? 0;
 }
 
+void showMsg(BuildContext context, String msg) =>
+    ScaffoldMessenger.of(context)
+        .showSnackBar(SnackBar(content: Text(msg)));
