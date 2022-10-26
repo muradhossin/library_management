@@ -106,5 +106,28 @@ class DbHelper{
     return AdminModel.fromMap(mapList.first);
   }
 
+  static Future<List<BookModel>> getAllBooks() async{
+    final db = await open();
+    final mapList = await db.query(tableBook);
+    return List.generate(mapList.length, (index) => BookModel.fromMap(mapList[index]));
+  }
+
+
+  static Future<int> deleteBook(int id) async{
+    final db = await open();
+    return db.delete(tableBook, where: '$tblBookColId = ?', whereArgs: [id]);
+  }
+
+  static Future<int> updateBook(BookModel bookModel) async{
+    final db = await open();
+    return db.update(tableBook, bookModel.toMap(), where: '$tblBookColId = ?', whereArgs: [bookModel.bookId]);
+  }
+
+  static Future<BookModel> getBookById(int id) async{
+    final db = await open();
+    final mapList = await db.query(tableBook, where: '$tblBookColId = ?', whereArgs: [id]);
+    return BookModel.fromMap(mapList.first);
+  }
+
 
 }

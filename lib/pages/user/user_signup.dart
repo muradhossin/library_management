@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:library_management/pages/home_page.dart';
 import 'package:library_management/pages/login_page.dart';
 import 'package:library_management/pages/user/user_login_page.dart';
+import 'package:library_management/utils/constants.dart';
 
 class UserSignup extends StatefulWidget {
   const UserSignup({Key? key}) : super(key: key);
@@ -102,13 +103,7 @@ class _UserSignupState extends State<UserSignup> {
                     ),
                     hintText: "book genre preference",
                     labelText: 'book genre preference'),
-                items: <String>[
-                  'Fiction',
-                  'Nonfiction',
-                  'Drama',
-                  'Poetry',
-                  'Folktale'
-                ].map((String value) {
+                items: bookCategoryList.map((String value) {
                   return DropdownMenuItem<String>(
                     value: value,
                     child: Text(value),

@@ -42,6 +42,8 @@ dependencies:
   sqflite: ^2.1.0+1
   shared_preferences:
   provider:
+  image_picker:
+  intl:
 
 
 dev_dependencies:
