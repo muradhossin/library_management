@@ -32,3 +32,5 @@ Future<int> getAdminId() async {
   final pref = await SharedPreferences.getInstance();
   return pref.getInt(adminId) ?? 0;
 }
+
+const List<String> adminReferralCodeList = ['ad1001','admin1002','admin1003','admin1004','admin1005'];

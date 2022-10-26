@@ -65,17 +65,17 @@ class DbHelper{
 
   static Future<int> insertAdmin(AdminModel adminModel) async{
     final db = await open();
-    return db.insert(createTableAdmin, adminModel.toMap());
+    return db.insert(tableAdmin, adminModel.toMap());
   }
 
   static Future<int> insertBook(BookModel bookModel) async{
     final db = await open();
-    return db.insert(createTableAdmin, bookModel.toMap());
+    return db.insert(tableBook, bookModel.toMap());
   }
 
   static Future<int> insertBooking(BookingModel bookingModel) async{
     final db = await open();
-    return db.insert(createTableAdmin, bookingModel.toMap());
+    return db.insert(tableBooking, bookingModel.toMap());
   }
 
   static Future<UserModel?> getUserByEmail(String email) async {

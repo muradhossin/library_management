@@ -126,16 +126,13 @@ class _AdminLoginPageState extends State<AdminLoginPage> {
       final password = passwordController.text;
       final admin = await provider.getAdminByEmail(email);
       if(admin == null){
-        setState(() {
           _setErroMsg('Admin does not exist');
-        });
+
       } else{
         if(password == admin.password){
-            Navigator.pushNamed(context, AdminBookListPage.routeName);
+            Navigator.pushReplacementNamed(context, AdminBookListPage.routeName);
         }else {
-          setState(() {
             _setErroMsg('Wrong password');
-          });
         }
       }
     }
