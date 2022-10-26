@@ -33,7 +33,6 @@ class DbHelper{
   $tblBookColAuthorName text,
   $tblBookColCategory text,
   $tblBookColDescription text,
-  $tblBookColRating text,
   $tblBookColImage text
   )''';
 

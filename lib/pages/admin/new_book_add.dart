@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:library_management/models/book_model.dart';
+import 'package:library_management/pages/admin/admin_book_list_page.dart';
 import 'package:library_management/utils/constants.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
@@ -189,14 +190,14 @@ class _NewBookAddState extends State<NewBookAdd> {
         book.bookId = id;
         bookProvider.updateBook(book).then((value) {
           bookProvider.getAllBooks();
-          Navigator.pop(context);
+          Navigator.pushReplacementNamed(context, AdminBookListPage.routeName);
         }).catchError((onError){
           print(onError.toString());
         });
       }else{
         bookProvider.insertBook(book).then((value) {
           bookProvider.getAllBooks();
-          Navigator.pop(context);
+          Navigator.pushReplacementNamed(context, AdminBookListPage.routeName);
         }).catchError((onError){
           print(onError.toString());
         });
