@@ -2,8 +2,11 @@ import 'package:library_management/models/admin_model.dart';
 import 'package:library_management/models/book_model.dart';
 import 'package:library_management/models/booking_model.dart';
 import 'package:library_management/models/user_model.dart';
+import 'package:library_management/utils/helper_functions.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart' as Path;
+
+import '../models/book_rating.dart';
 
 class DbHelper{
   static const String createTableUser = '''create table $tableUser(
@@ -45,6 +48,13 @@ class DbHelper{
   $tblBookingColHiringDate text,
   $tblBookingColReturnDate text
   )''';
+
+  static const String createTableRating = '''create table $tableRating(
+  $tblRatingColBookId integer,
+  $tblRatingColUserId integer,
+  $tblRatingColDate text,
+  $tblRatingColUserReviews text,
+  $tblColRating real)''';
   
   
   static Future<Database> open() async {
@@ -55,6 +65,7 @@ class DbHelper{
      await db.execute(createTableAdmin);
      await db.execute(createTableBook);
      await db.execute(createTableBooking);
+     await db.execute(createTableRating);
     });
   }
 
@@ -76,6 +87,11 @@ class DbHelper{
   static Future<int> insertBooking(BookingModel bookingModel) async{
     final db = await open();
     return db.insert(tableBooking, bookingModel.toMap());
+  }
+
+  static Future<int> insertRating(BookRating bookRating) async {
+    final db = await open();
+    return db.insert(tableRating, bookRating.toMap());
   }
 
   static Future<UserModel?> getUserByEmail(String email) async {
@@ -128,6 +144,23 @@ class DbHelper{
     final mapList = await db.query(tableBook, where: '$tblBookColId = ?', whereArgs: [id]);
     return BookModel.fromMap(mapList.first);
   }
+
+  static Future<List<BookRating>> getRatingsByBookId(int id) async {
+    final db = await open();
+    final mapList = await db.query(tableRating,
+      where: '$tblRatingColBookId = ?', whereArgs: [id],);
+    return List.generate(mapList.length, (index) =>
+        BookRating.fromMap(mapList[index]));
+  }
+
+
+
+  static Future<int> updateRating(BookRating bookRating) async {
+    final db = await open();
+    return db.update(tableRating, bookRating.toMap(),
+      where: '$tblRatingColBookId = ? and $tblRatingColUserId = ?', whereArgs: [bookRating.book_id, bookRating.user_id],);
+  }
+
 
 
 }

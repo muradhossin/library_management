@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:library_management/pages/admin/admin_book_list_page.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -41,6 +42,9 @@ void showMsg(BuildContext context, String msg) =>
     ScaffoldMessenger.of(context)
         .showSnackBar(SnackBar(content: Text(msg)));
 
+String getFormattedDate(DateTime dateTime, String pattern) {
+  return DateFormat(pattern).format(dateTime);
+}
 
 void deleteBook(BuildContext context, int id, BookProvider provider) {
   showDialog(

@@ -4,9 +4,11 @@ import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/material.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:library_management/custom_widgets/drawer_widget.dart';
+import 'package:library_management/models/book_rating.dart';
 import 'package:library_management/models/user_model.dart';
 import 'package:library_management/pages/user/book_info_page.dart';
 import 'package:library_management/pages/user/user_login_page.dart';
+import 'package:library_management/providers/rating_provider.dart';
 import 'package:provider/provider.dart';
 
 import '../../providers/book_provider.dart';
@@ -26,12 +28,14 @@ class _UserHomePageState extends State<UserHomePage> {
   late BookProvider provider;
   String? selectedValue;
   late int id;
+  late RatingProvider ratingProvider;
 
   @override
   void didChangeDependencies() async{
     Provider.of<BookProvider>(context, listen: false).getAllBooks();
     id = ModalRoute.of(context)!.settings.arguments as int;
     final providerUser = Provider.of<UserProvider>(context, listen: false);
+    ratingProvider = Provider.of<RatingProvider>(context, listen: false);
     super.didChangeDependencies();
 
   }
@@ -150,12 +154,25 @@ class _UserHomePageState extends State<UserHomePage> {
                     title: Text(book.title),
                     subtitle: Text(
                         'Author: ${book.authorName} Category: ${book.category}'),
-                    trailing: Row(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        Icon(Icons.star_rate),
-                        Text('4.5'),
-                      ],
+                    trailing: FutureBuilder<double>(
+                      future: ratingProvider.getBookRating(book.bookId!),
+                      builder: (context, snapshot) {
+                        if(snapshot.hasData){
+                          final rate = snapshot.data;
+                          return Row(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              Icon(Icons.star_rate),
+                              Text(rate!.toStringAsFixed(1)),
+                            ],
+                          );
+                        }
+                        if(snapshot.hasError){
+                          return Text('Failed to load');
+                        }
+                        return CircularProgressIndicator();
+                      },
+
                     ),
                   ),
                 );

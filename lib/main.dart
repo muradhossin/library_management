@@ -1,6 +1,7 @@
 
 
 
+
 import 'package:flutter/material.dart';
 import 'package:library_management/pages/admin/admin_book_info_page.dart';
 import 'package:library_management/pages/admin/admin_book_list_page.dart';
@@ -17,6 +18,7 @@ import 'package:library_management/pages/user/user_login_page.dart';
 import 'package:library_management/pages/user/user_signup.dart';
 import 'package:library_management/providers/admin_provider.dart';
 import 'package:library_management/providers/book_provider.dart';
+import 'package:library_management/providers/rating_provider.dart';
 import 'package:library_management/providers/user_provider.dart';
 import 'package:provider/provider.dart';
 
@@ -26,6 +28,7 @@ void main() {
       ChangeNotifierProvider(create: (context) => UserProvider()),
       ChangeNotifierProvider(create: (context) => AdminProvider()),
       ChangeNotifierProvider(create: (context) => BookProvider()),
+      ChangeNotifierProvider(create: (context) => RatingProvider()),
 
     ],
     child: const MyApp(),

@@ -28,3 +28,6 @@ final List<String> filter = [
   'Poetry',
   'Folktale',
 ];
+const datePattern = 'dd/MM/yyyy';
+const dateTimePattern = 'dd/MM/yyyy hh:mm:s a';
+
