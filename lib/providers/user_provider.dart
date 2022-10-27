@@ -9,4 +9,15 @@ class UserProvider extends ChangeNotifier{
   }
 
 
+  Future<UserModel?> getUserByEmail(String email) {
+    return DbHelper.getUserByEmail(email);
+  }
+
+  Future<UserModel> getUserById(int id) async {
+    return await DbHelper.getUserById(id);
+  }
+
+
+
+
 }

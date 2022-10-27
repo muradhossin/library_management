@@ -4,7 +4,7 @@ const String tblUserColName = 'name';
 const String tblUserColGender = 'gender';
 const String tblUserColAddress = 'address';
 const String tblUserColBookPreference = 'book_preference';
-const String tblUserColBookPhoneNumber = 'phone_number';
+const String tblUserColPhoneNumber = 'phone_number';
 const String tblUserColEmail = 'email';
 const String tblUserColPassword = 'password';
 const String tblUserColConfirmPassword = 'confirm_password';
@@ -39,7 +39,7 @@ class UserModel {
       tblUserColGender: gender,
       tblUserColAddress: address,
       tblUserColBookPreference: bookPreference,
-      tblUserColBookPhoneNumber: phoneNumber,
+      tblUserColPhoneNumber: phoneNumber,
       tblUserColEmail: email,
       tblUserColPassword: password,
       tblUserColConfirmPassword: confirmPassword,
@@ -57,7 +57,7 @@ class UserModel {
         gender: map[tblUserColGender],
         address: map[tblUserColAddress],
         bookPreference: map[tblUserColBookPreference],
-        phoneNumber: map[tblUserColBookPhoneNumber],
+        phoneNumber: map[tblUserColPhoneNumber],
         email: map[tblUserColEmail],
         password: map[tblUserColPassword],
         confirmPassword: map[tblUserColConfirmPassword],

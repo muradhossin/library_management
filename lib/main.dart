@@ -41,7 +41,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      initialRoute: AdminBookListPage.routeName,
+      initialRoute: HomePage.routeName,
       routes: {
         HomePage.routeName: (context) => HomePage(),
         // LoginPage.routeName: (context) => LoginPage(),

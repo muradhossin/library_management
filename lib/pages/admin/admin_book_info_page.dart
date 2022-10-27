@@ -102,30 +102,30 @@ class _AdminBookInfoPageState extends State<AdminBookInfoPage> {
                         textAlign: TextAlign.justify,
                       ),
                     ),
-                    Center(
-                      child: Text(
-                        'Give Your Rating',
-                        style: Theme.of(context).textTheme.headline5,
-                      ),
-                    ),
-                    Center(
-                      child: RatingBar.builder(
-                        initialRating: 3,
-                        minRating: 1,
-                        direction: Axis.horizontal,
-                        allowHalfRating: true,
-                        itemCount: 5,
-                        itemPadding:
-                            const EdgeInsets.symmetric(horizontal: 4.0),
-                        itemBuilder: (context, _) => const Icon(
-                          Icons.star,
-                          color: Colors.amber,
-                        ),
-                        onRatingUpdate: (rating) {
-                          print(rating);
-                        },
-                      ),
-                    ),
+                    // Center(
+                    //   child: Text(
+                    //     'Give Your Rating',
+                    //     style: Theme.of(context).textTheme.headline5,
+                    //   ),
+                    // ),
+                    // Center(
+                    //   child: RatingBar.builder(
+                    //     initialRating: 3,
+                    //     minRating: 1,
+                    //     direction: Axis.horizontal,
+                    //     allowHalfRating: true,
+                    //     itemCount: 5,
+                    //     itemPadding:
+                    //         const EdgeInsets.symmetric(horizontal: 4.0),
+                    //     itemBuilder: (context, _) => const Icon(
+                    //       Icons.star,
+                    //       color: Colors.amber,
+                    //     ),
+                    //     onRatingUpdate: (rating) {
+                    //       print(rating);
+                    //     },
+                    //   ),
+                    // ),
                     Padding(
                       padding: const EdgeInsets.all(8.0),
                       child: Text(

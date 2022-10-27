@@ -12,6 +12,7 @@ class DbHelper{
   $tblUserColGender text,
   $tblUserColAddress text,
   $tblUserColBookPreference text,
+  $tblUserColPhoneNumber text,
   $tblUserColEmail text,
   $tblUserColPassword text,
   $tblUserColConfirmPassword text

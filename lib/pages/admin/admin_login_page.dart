@@ -17,6 +17,7 @@ class AdminLoginPage extends StatefulWidget {
 }
 
 class _AdminLoginPageState extends State<AdminLoginPage> {
+  bool _isObsecure = true;
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
   final _formkey = GlobalKey<FormState>();
@@ -44,6 +45,7 @@ class _AdminLoginPageState extends State<AdminLoginPage> {
                     ),
                     hintText: "Enter your email",
                     labelText: "Enter your email",
+
                   ),
                   validator: (value) {
                     if(value == null || value.isEmpty){
@@ -56,6 +58,8 @@ class _AdminLoginPageState extends State<AdminLoginPage> {
               Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: TextFormField(
+                  obscureText: _isObsecure,
+                  obscuringCharacter: "*",
                   controller: passwordController,
                   decoration: InputDecoration(
                     border: OutlineInputBorder(
@@ -63,6 +67,16 @@ class _AdminLoginPageState extends State<AdminLoginPage> {
                     ),
                     hintText: "Enter your password",
                     labelText: "Enter your password",
+                    suffixIcon: IconButton(
+                      icon: Icon(_isObsecure
+                          ? Icons.visibility
+                          : Icons.visibility_off),
+                      onPressed: () {
+                        setState(() {
+                          _isObsecure = !_isObsecure;
+                        });
+                      },
+                    ),
                   ),
                   validator: (value){
                     if(value == null || value.isEmpty){
