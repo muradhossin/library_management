@@ -161,13 +161,14 @@ class _UserHomePageState extends State<UserHomePage> {
                   Navigator.pushNamed(context, BookInfoPage.routeName);
                 },
                 leading:  Image.asset('images/1.jpg'),
-                title: Text('Pother Pachali'),
+                title:const Text('Pother Pachali', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20.0),),
                 subtitle:
-                    Text('Author: Bivutibushon Bondhopaddhoy Category: Fiction'),
+                    const Text('Author: Bivutibushon Bondhopaddhoy\nCategory: Fiction',
+                      style: TextStyle(fontStyle: FontStyle.italic, fontSize: 15.0),),
                 trailing: Row(
                   mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Icon(Icons.star_rate),
+                  children:const  [
+                     Icon(Icons.star_rate),
                     Text('4.5'),
                   ],
                 ),
@@ -179,9 +180,9 @@ class _UserHomePageState extends State<UserHomePage> {
               shadowColor: Colors.blueGrey,
               child: ListTile(
                 leading:  Image.asset('images/2.jpg'),
-                title: Text('Himu Rimande'),
+                title: Text('Himu Rimande',style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20.0),),
                 subtitle:
-                    Text('Author: Humayan Ahmed Category: Fiction'),
+                    Text('Author: Humayan Ahmed\nCategory: Fiction',style: TextStyle(fontStyle: FontStyle.italic, fontSize: 15.0),),
                 trailing: Row(
                   mainAxisSize: MainAxisSize.min,
                   children: [
