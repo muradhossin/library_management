@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
+import 'package:library_management/pages/admin/new_book_add.dart';
 import 'package:library_management/providers/book_provider.dart';
 import 'package:provider/provider.dart';
 
@@ -32,12 +33,23 @@ class _AdminBookInfoPageState extends State<AdminBookInfoPage> {
 
   @override
   Widget build(BuildContext context) {
-
-
     return Scaffold(
       appBar: AppBar(
         title: Text(name),
         actions: [
+          IconButton(
+            onPressed: () {
+              Navigator.pushNamed(
+                context,
+                NewBookAdd.routeName,
+                arguments: id).then((value) {
+                  setState(() {
+                    name = value as String;
+                  });
+              });
+            },
+            icon: Icon(Icons.edit),
+          ),
           IconButton(
             onPressed: () {},
             icon: const Icon(Icons.delete_forever),
@@ -49,7 +61,7 @@ class _AdminBookInfoPageState extends State<AdminBookInfoPage> {
           child: FutureBuilder<BookModel>(
             future: provider.getBookById(id),
             builder: (context, snapshot) {
-              if(snapshot.hasData){
+              if (snapshot.hasData) {
                 final book = snapshot.data;
                 return Column(
                   crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -63,13 +75,16 @@ class _AdminBookInfoPageState extends State<AdminBookInfoPage> {
                           shape: BoxShape.rectangle,
                           borderRadius: BorderRadius.circular(15.0),
                         ),
-                        child: Image.file(File(book!.image), fit: BoxFit.fill,),
+                        child: Image.file(
+                          File(book!.image),
+                          fit: BoxFit.fill,
+                        ),
                       ),
                     ),
                     ListTile(
-                      title:  Text("${book.bookId}"),
-                      subtitle:
-                      Text('Author: ${book.authorName} Category: ${book.category}'),
+                      title: Text(book.title),
+                      subtitle: Text(
+                          'Author: ${book.authorName} Category: ${book.category}'),
                       trailing: Row(
                         mainAxisSize: MainAxisSize.min,
                         children: const [
@@ -80,7 +95,8 @@ class _AdminBookInfoPageState extends State<AdminBookInfoPage> {
                     ),
                     Padding(
                       padding: EdgeInsets.all(8.0),
-                      child: Text(book.description,
+                      child: Text(
+                        book.description,
                         textAlign: TextAlign.justify,
                       ),
                     ),
@@ -97,7 +113,8 @@ class _AdminBookInfoPageState extends State<AdminBookInfoPage> {
                         direction: Axis.horizontal,
                         allowHalfRating: true,
                         itemCount: 5,
-                        itemPadding: const EdgeInsets.symmetric(horizontal: 4.0),
+                        itemPadding:
+                            const EdgeInsets.symmetric(horizontal: 4.0),
                         itemBuilder: (context, _) => const Icon(
                           Icons.star,
                           color: Colors.amber,
@@ -117,8 +134,8 @@ class _AdminBookInfoPageState extends State<AdminBookInfoPage> {
                     const Card(
                       shape: RoundedRectangleBorder(
                           side: BorderSide(
-                            color: Colors.grey,
-                          )),
+                        color: Colors.grey,
+                      )),
                       child: ListTile(
                         leading: Icon(
                           Icons.person,
@@ -131,8 +148,8 @@ class _AdminBookInfoPageState extends State<AdminBookInfoPage> {
                     const Card(
                       shape: RoundedRectangleBorder(
                           side: BorderSide(
-                            color: Colors.grey,
-                          )),
+                        color: Colors.grey,
+                      )),
                       child: ListTile(
                         leading: Icon(
                           Icons.person,
@@ -160,8 +177,8 @@ class _AdminBookInfoPageState extends State<AdminBookInfoPage> {
                       ),
                     ),
                     Padding(
-                      padding:
-                      const EdgeInsets.only(right: 20.0, top: 8.0, bottom: 20.0),
+                      padding: const EdgeInsets.only(
+                          right: 20.0, top: 8.0, bottom: 20.0),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.end,
                         children: [
@@ -175,14 +192,14 @@ class _AdminBookInfoPageState extends State<AdminBookInfoPage> {
                   ],
                 );
               }
-              if(snapshot.hasError){
+              if (snapshot.hasError) {
                 return const Text('Failed to load data');
               }
               return const CircularProgressIndicator();
             },
           ),
-        ),),
+        ),
+      ),
     );
-
   }
 }

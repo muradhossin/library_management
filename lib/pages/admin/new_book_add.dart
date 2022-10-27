@@ -24,7 +24,6 @@ class _NewBookAddState extends State<NewBookAdd> {
   final titleController = TextEditingController();
   final authorNameController = TextEditingController();
   final descriptionController = TextEditingController();
-  final budgetController = TextEditingController();
   String? selectedType;
   String? imagePath;
   int? id;
@@ -38,6 +37,13 @@ class _NewBookAddState extends State<NewBookAdd> {
       _setData(book);
     }
     super.didChangeDependencies();
+  }
+  @override
+  void dispose() {
+    titleController.dispose();
+    authorNameController.dispose();
+    descriptionController.dispose();
+    super.dispose();
   }
   @override
   Widget build(BuildContext context) {
@@ -190,7 +196,7 @@ class _NewBookAddState extends State<NewBookAdd> {
         book.bookId = id;
         bookProvider.updateBook(book).then((value) {
           bookProvider.getAllBooks();
-          Navigator.pop(context);
+          Navigator.pop(context, book.title);
         }).catchError((onError){
           print(onError.toString());
         });
