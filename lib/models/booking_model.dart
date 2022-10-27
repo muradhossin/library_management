@@ -39,6 +39,7 @@ class BookingModel {
   }
 
   factory BookingModel.fromMap(Map<String, dynamic> map) => BookingModel(
+        bookingId: map[tblBookingColId],
         name: map[tblBookingColName],
         address: map[tblBookingColAddress],
         phoneNumber: map[tblBookingColPhoneNumber],

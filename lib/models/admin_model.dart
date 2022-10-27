@@ -40,6 +40,7 @@ class AdminModel {
 
   factory AdminModel.fromMap(Map<String, dynamic>map) =>
       AdminModel(
+        adminId: map[tblAdminColId],
         name: map[tblAdminColName],
         email: map[tblAdminColEmail],
         password: map[tblAdminColPassword],

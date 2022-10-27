@@ -17,10 +17,15 @@ class AdminBookListPage extends StatefulWidget {
 }
 
 class _AdminBookListPageState extends State<AdminBookListPage> {
+  @override
+  void didChangeDependencies() {
+    Provider.of<BookProvider>(context, listen: false).getAllBooks();
+    super.didChangeDependencies();
+  }
 
   @override
   Widget build(BuildContext context) {
-    final provider = Provider.of<BookProvider>(context, listen: false);
+    final provider = Provider.of<BookProvider>(context);
     return Scaffold(
       appBar: AppBar(
         title: Text('Admin Book List'),
@@ -35,9 +40,9 @@ class _AdminBookListPageState extends State<AdminBookListPage> {
       ),
       body: ListView.builder(
         itemCount: provider.bookList.length,
-        itemBuilder: (context, index){
+        itemBuilder: (context, index) {
           final book = provider.bookList[index];
-          return BookItem(book: book,);
+          return BookItem(book: book);
         },
       ),
     );
@@ -50,6 +55,7 @@ class BookItem extends StatelessWidget {
     required this.book,
   }) : super(key: key);
   final BookModel book;
+
   @override
   Widget build(BuildContext context) {
     return Card(
@@ -58,12 +64,16 @@ class BookItem extends StatelessWidget {
       shadowColor: Colors.blueGrey,
       child: ListTile(
         onTap: () {
-          Navigator.pushNamed(context, AdminBookInfoPage.routeName);
+          Navigator.pushNamed(
+            context,
+            AdminBookInfoPage.routeName,
+            arguments: [book.bookId, book.title]
+          );
         },
         leading: Image.file(File(book.image)),
-        title:  Text(book.title),
-        subtitle: Text(
-            'Author: ${book.authorName}  Category: ${book.category}'),
+        title: Text(book.title),
+        subtitle:
+            Text('Author: ${book.authorName}  Category: ${book.category}'),
         trailing: Row(
           mainAxisSize: MainAxisSize.min,
           children: [

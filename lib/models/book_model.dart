@@ -1,10 +1,9 @@
 const String tableBook = 'tbl_book';
-const String tblBookColId = 'book_id';
+const String tblBookColId = 'bookId';
 const String tblBookColTitle = 'title';
 const String tblBookColAuthorName = 'author_name';
 const String tblBookColCategory = 'category';
 const String tblBookColDescription = 'description';
-const String tblBookColRating = 'rating';
 const String tblBookColImage = 'image';
 
 class BookModel {
@@ -33,7 +32,6 @@ class BookModel {
       tblBookColImage: image,
 
     };
-
     if (bookId != null) {
       map[tblBookColId] = bookId;
     }
@@ -41,6 +39,7 @@ class BookModel {
   }
 
   factory BookModel.fromMap(Map<String, dynamic> map) => BookModel(
+    bookId: map[tblBookColId],
     title: map[tblBookColTitle],
     authorName: map[tblBookColAuthorName],
     category: map[tblBookColCategory],

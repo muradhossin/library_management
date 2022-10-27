@@ -190,14 +190,14 @@ class _NewBookAddState extends State<NewBookAdd> {
         book.bookId = id;
         bookProvider.updateBook(book).then((value) {
           bookProvider.getAllBooks();
-          Navigator.pushReplacementNamed(context, AdminBookListPage.routeName);
+          Navigator.pop(context);
         }).catchError((onError){
           print(onError.toString());
         });
       }else{
         bookProvider.insertBook(book).then((value) {
           bookProvider.getAllBooks();
-          Navigator.pushReplacementNamed(context, AdminBookListPage.routeName);
+          Navigator.pop(context);
         }).catchError((onError){
           print(onError.toString());
         });
