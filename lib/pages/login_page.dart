@@ -49,7 +49,7 @@ class LoginPage extends StatelessWidget {
                          decoration:const InputDecoration(
                              border: OutlineInputBorder(),
                              labelText: 'Username',
-                             prefixIcon: Icon(Icons.person_outline),
+                             prefixIcon: Icon(Icons.person_outline,),
                              labelStyle: TextStyle(
                                  fontSize: 15
                              )

@@ -116,9 +116,11 @@ class AdminBookListPage extends StatelessWidget {
               shadowColor: Colors.blueGrey,
               child: ListTile(
                 leading: Image.asset('images/1.jpg'),
-                title: const Text('Pother Pachali'),
+                title: const Text('Pother Pachali',
+                    style:TextStyle(fontWeight: FontWeight.bold, fontSize: 20)),
                 subtitle: const Text(
-                    'Author: Bivutibushon Bondhopaddhoy Category: Fiction'),
+                    'Author: Bivutibushon Bondhopaddhoy Category: Fiction',
+                  style: TextStyle(fontStyle: FontStyle.italic),),
                 trailing: Row(
                   mainAxisSize: MainAxisSize.min,
                   children: [

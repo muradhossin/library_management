@@ -41,6 +41,10 @@ dependencies:
   flutter_rating_bar: ^4.0.1
   comment_box: ^0.0.17
   comment_tree: ^0.3.0
+  provider:
+  intl:
+  sqflite:
+  image_picker:
 
 dev_dependencies:
   flutter_test:
