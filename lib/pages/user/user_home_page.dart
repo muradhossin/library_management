@@ -3,10 +3,14 @@ import 'dart:io';
 import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/material.dart';
 import 'package:carousel_slider/carousel_slider.dart';
+import 'package:library_management/custom_widgets/drawer_widget.dart';
+import 'package:library_management/models/user_model.dart';
 import 'package:library_management/pages/user/book_info_page.dart';
+import 'package:library_management/pages/user/user_login_page.dart';
 import 'package:provider/provider.dart';
 
 import '../../providers/book_provider.dart';
+import '../../providers/user_provider.dart';
 import '../../utils/constants.dart';
 
 class UserHomePage extends StatefulWidget {
@@ -21,60 +25,22 @@ class UserHomePage extends StatefulWidget {
 class _UserHomePageState extends State<UserHomePage> {
   late BookProvider provider;
   String? selectedValue;
+  late int id;
 
   @override
-  void didChangeDependencies() {
+  void didChangeDependencies() async{
     Provider.of<BookProvider>(context, listen: false).getAllBooks();
+    id = ModalRoute.of(context)!.settings.arguments as int;
+    final providerUser = Provider.of<UserProvider>(context, listen: false);
     super.didChangeDependencies();
+
   }
 
   @override
   Widget build(BuildContext context) {
     provider = Provider.of<BookProvider>(context);
     return Scaffold(
-      endDrawer: Drawer(
-        elevation: 16,
-        child: Column(
-          children: const [
-            Padding(
-              padding: EdgeInsets.all(8.0),
-              child: ListTile(
-                leading: Icon(Icons.person),
-                title: Text(
-                  'Name',
-                ),
-              ),
-            ),
-            Padding(
-              padding: EdgeInsets.all(8.0),
-              child: ListTile(
-                leading: Icon(Icons.save),
-                title: Text(
-                  'Saved Book',
-                ),
-              ),
-            ),
-            Padding(
-              padding: EdgeInsets.all(8.0),
-              child: ListTile(
-                leading: Icon(Icons.history_rounded),
-                title: Text(
-                  'Hired Book',
-                ),
-              ),
-            ),
-            Padding(
-              padding: EdgeInsets.all(8.0),
-              child: ListTile(
-                leading: Icon(Icons.logout),
-                title: Text(
-                  'Log Out',
-                ),
-              ),
-            ),
-          ],
-        ),
-      ),
+      endDrawer: DrawerWidget(id: id,),
       appBar: AppBar(
         title: Text('User Home Page'),
         actions: [
@@ -82,11 +48,8 @@ class _UserHomePageState extends State<UserHomePage> {
             builder: (context) => GestureDetector(
               onTap: () => Scaffold.of(context).openEndDrawer(),
               child: Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: CircleAvatar(
-                  radius: 30.0,
-                  backgroundImage: AssetImage('images/1.jpg'),
-                ),
+                padding: const EdgeInsets.all(16.0),
+                child: Icon(Icons.person, size: 30,),
               ),
             ),
           ),
@@ -180,7 +143,7 @@ class _UserHomePageState extends State<UserHomePage> {
                       Navigator.pushNamed(
                         context,
                         BookInfoPage.routeName,
-                        arguments: [book.bookId, book.title]
+                        arguments: [book.bookId, book.title, id]
                       );
                     },
                     leading: Image.file(File(book.image)),
@@ -198,6 +161,7 @@ class _UserHomePageState extends State<UserHomePage> {
                 );
               },
             ),
+
           ],
         ),
       ),

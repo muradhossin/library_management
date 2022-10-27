@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
+import 'package:library_management/custom_widgets/drawer_widget.dart';
 import 'package:library_management/models/book_model.dart';
 import 'package:library_management/pages/user/booking_book_page.dart';
 import 'package:library_management/providers/book_provider.dart';
@@ -20,7 +21,7 @@ class _BookInfoPageState extends State<BookInfoPage> {
   late BookProvider provider;
   late int id;
   late String name;
-
+  late int userId;
 
   @override
   void didChangeDependencies() {
@@ -28,55 +29,14 @@ class _BookInfoPageState extends State<BookInfoPage> {
     provider = Provider.of<BookProvider>(context, listen: false);
     id = argList[0];
     name = argList[1];
+    userId = argList[2];
     super.didChangeDependencies();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      endDrawer: Drawer(
-        elevation: 16,
-        child: Column(
-          children: const [
-            Padding(
-              padding: EdgeInsets.all(8.0),
-              child: ListTile(
-                leading: Icon(Icons.person),
-                title: Text(
-                  'Name',
-                ),
-              ),
-            ),
-            Padding(
-              padding: EdgeInsets.all(8.0),
-              child: ListTile(
-                leading: Icon(Icons.save),
-                title: Text(
-                  'Saved Book',
-                ),
-              ),
-            ),
-            Padding(
-              padding: EdgeInsets.all(8.0),
-              child: ListTile(
-                leading: Icon(Icons.history_rounded),
-                title: Text(
-                  'Hired Book',
-                ),
-              ),
-            ),
-            Padding(
-              padding: EdgeInsets.all(8.0),
-              child: ListTile(
-                leading: Icon(Icons.logout),
-                title: Text(
-                  'Log Out',
-                ),
-              ),
-            ),
-          ],
-        ),
-      ),
+      endDrawer: DrawerWidget(id: userId,),
       appBar: AppBar(
         title: Text(name),
         actions: [
@@ -98,10 +58,7 @@ class _BookInfoPageState extends State<BookInfoPage> {
               onTap: () => Scaffold.of(context).openEndDrawer(),
               child: const Padding(
                 padding: EdgeInsets.all(8.0),
-                child: CircleAvatar(
-                  radius: 30.0,
-                  backgroundImage: AssetImage('images/1.jpg'),
-                ),
+                child: Icon(Icons.person, size: 35,),
               ),
             ),
           ),

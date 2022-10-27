@@ -21,9 +21,9 @@ class _UserLoginPageState extends State<UserLoginPage> {
   final passwordController = TextEditingController();
   final _formkey = GlobalKey<FormState>();
   String errMsg = '';
+
   @override
   Widget build(BuildContext context) {
-
     return Scaffold(
       appBar: AppBar(
         title: const Text('User Login Page'),
@@ -46,7 +46,7 @@ class _UserLoginPageState extends State<UserLoginPage> {
                     labelText: "Enter your email",
                   ),
                   validator: (value) {
-                    if(value == null || value.isEmpty){
+                    if (value == null || value.isEmpty) {
                       return 'Email is required';
                     }
                     return null;
@@ -75,10 +75,9 @@ class _UserLoginPageState extends State<UserLoginPage> {
                         });
                       },
                     ),
-
                   ),
                   validator: (value) {
-                    if(value == null || value.isEmpty){
+                    if (value == null || value.isEmpty) {
                       return 'Email is required';
                     }
                     return null;
@@ -92,7 +91,7 @@ class _UserLoginPageState extends State<UserLoginPage> {
                   Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: ElevatedButton(
-                      onPressed: (){
+                      onPressed: () {
                         _authenticate();
                       },
                       child: const Text('Login'),
@@ -101,7 +100,7 @@ class _UserLoginPageState extends State<UserLoginPage> {
                   Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: ElevatedButton(
-                      onPressed: (){
+                      onPressed: () {
                         Navigator.pushNamed(context, UserSignup.routeName);
                       },
                       child: const Text('Create new account'),
@@ -118,7 +117,9 @@ class _UserLoginPageState extends State<UserLoginPage> {
                   // ),
                 ],
               ),
-              SizedBox(height: 10,),
+              SizedBox(
+                height: 10,
+              ),
               Text(errMsg),
             ],
           ),
@@ -127,19 +128,23 @@ class _UserLoginPageState extends State<UserLoginPage> {
     );
   }
 
-  _authenticate() async{
+  _authenticate() async {
     final provider = Provider.of<UserProvider>(context, listen: false);
-    if(_formkey.currentState!.validate()){
+    if (_formkey.currentState!.validate()) {
       final email = emailController.text;
       final password = passwordController.text;
 
       final user = await provider.getUserByEmail(email);
-      if(user == null){
+      if (user == null) {
         _setErrorMsg('User does not exist');
-      }else{
-        if(password == user.password){
-          Navigator.pushReplacementNamed(context, UserHomePage.routeName);
-        }else{
+      } else {
+        if (password == user.password) {
+          Navigator.pushReplacementNamed(
+            context,
+            UserHomePage.routeName,
+            arguments: user.userId,
+          );
+        } else {
           _setErrorMsg('Wrong password');
         }
       }
