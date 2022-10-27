@@ -5,6 +5,7 @@ import 'package:library_management/models/book_model.dart';
 import 'package:library_management/pages/admin/admin_book_info_page.dart';
 import 'package:library_management/pages/admin/new_book_add.dart';
 import 'package:library_management/providers/book_provider.dart';
+import 'package:library_management/utils/helper_functions.dart';
 import 'package:provider/provider.dart';
 
 class AdminBookListPage extends StatefulWidget {
@@ -17,6 +18,7 @@ class AdminBookListPage extends StatefulWidget {
 }
 
 class _AdminBookListPageState extends State<AdminBookListPage> {
+  late BookProvider provider;
   @override
   void didChangeDependencies() {
     Provider.of<BookProvider>(context, listen: false).getAllBooks();
@@ -25,7 +27,7 @@ class _AdminBookListPageState extends State<AdminBookListPage> {
 
   @override
   Widget build(BuildContext context) {
-    final provider = Provider.of<BookProvider>(context);
+    provider = Provider.of<BookProvider>(context);
     return Scaffold(
       appBar: AppBar(
         title: Text('Admin Book List'),
@@ -42,7 +44,7 @@ class _AdminBookListPageState extends State<AdminBookListPage> {
         itemCount: provider.bookList.length,
         itemBuilder: (context, index) {
           final book = provider.bookList[index];
-          return BookItem(book: book);
+          return BookItem(book: book, provider: provider,);
         },
       ),
     );
@@ -53,8 +55,10 @@ class BookItem extends StatelessWidget {
   const BookItem({
     Key? key,
     required this.book,
+    required this.provider,
   }) : super(key: key);
   final BookModel book;
+  final BookProvider provider;
 
   @override
   Widget build(BuildContext context) {
@@ -80,7 +84,9 @@ class BookItem extends StatelessWidget {
             const Icon(Icons.star_rate),
             const Text('4.5'),
             IconButton(
-              onPressed: () {},
+              onPressed: () {
+                deleteBook(context, book.bookId!, provider);
+              },
               icon: const Icon(Icons.delete),
             ),
           ],

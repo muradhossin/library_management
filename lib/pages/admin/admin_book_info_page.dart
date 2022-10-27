@@ -2,8 +2,10 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
+import 'package:library_management/pages/admin/admin_book_list_page.dart';
 import 'package:library_management/pages/admin/new_book_add.dart';
 import 'package:library_management/providers/book_provider.dart';
+import 'package:library_management/utils/helper_functions.dart';
 import 'package:provider/provider.dart';
 
 import '../../models/book_model.dart';
@@ -39,19 +41,19 @@ class _AdminBookInfoPageState extends State<AdminBookInfoPage> {
         actions: [
           IconButton(
             onPressed: () {
-              Navigator.pushNamed(
-                context,
-                NewBookAdd.routeName,
-                arguments: id).then((value) {
-                  setState(() {
-                    name = value as String;
-                  });
+              Navigator.pushNamed(context, NewBookAdd.routeName, arguments: id)
+                  .then((value) {
+                setState(() {
+                  name = value as String;
+                });
               });
             },
             icon: Icon(Icons.edit),
           ),
           IconButton(
-            onPressed: () {},
+            onPressed: () {
+              deleteBook(context, id, provider);
+            },
             icon: const Icon(Icons.delete_forever),
           ),
         ],
@@ -202,4 +204,32 @@ class _AdminBookInfoPageState extends State<AdminBookInfoPage> {
       ),
     );
   }
+
+  // void _deleteBook(BuildContext context, int id, BookProvider provider) {
+  //   showDialog(
+  //     context: context,
+  //     builder: (context) => AlertDialog(
+  //       title: const Text('Delete this book'),
+  //       content: const Text('Are you sure to delete this book?'),
+  //       actions: [
+  //         TextButton(
+  //           onPressed: (){
+  //             Navigator.pop(context);
+  //           },
+  //           child: const Text('No'),
+  //         ),
+  //         TextButton(
+  //           onPressed: () {
+  //             Navigator.pop(context);
+  //             provider.deleteBook(id).then((value) {
+  //               Navigator.pop(context);
+  //               provider.getAllBooks();
+  //             });
+  //           },
+  //           child: const Text("Yes"),
+  //         ),
+  //       ],
+  //     ),
+  //   );
+  // }
 }

@@ -1,9 +1,9 @@
 const List<String> adminReferralCodeList = [
   'ad1001',
-  'admin1002',
-  'admin1003',
-  'admin1004',
-  'admin1005',
+  'ad1002',
+  'ad1003',
+  'ad1004',
+  'ad1005',
 ];
 const List<String> bookCategoryList = [
   'Fiction',

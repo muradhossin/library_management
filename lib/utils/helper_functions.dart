@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:library_management/pages/admin/admin_book_list_page.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+
+import '../providers/book_provider.dart';
 
 Future<bool> setUserLoginStatus(bool status) async{
   final pref = await SharedPreferences.getInstance();
@@ -37,3 +40,32 @@ Future<int> getAdminId() async {
 void showMsg(BuildContext context, String msg) =>
     ScaffoldMessenger.of(context)
         .showSnackBar(SnackBar(content: Text(msg)));
+
+
+void deleteBook(BuildContext context, int id, BookProvider provider) {
+  showDialog(
+    context: context,
+    builder: (context) => AlertDialog(
+      title: const Text('Delete this book'),
+      content: const Text('Are you sure to delete this book?'),
+      actions: [
+        TextButton(
+          onPressed: (){
+            Navigator.pop(context);
+          },
+          child: const Text('No'),
+        ),
+        TextButton(
+          onPressed: () {
+            Navigator.pop(context);
+            provider.deleteBook(id).then((value) {
+              Navigator.pushReplacementNamed(context, AdminBookListPage.routeName);
+              provider.getAllBooks();
+            });
+          },
+          child: const Text("Yes"),
+        ),
+      ],
+    ),
+  );
+}
