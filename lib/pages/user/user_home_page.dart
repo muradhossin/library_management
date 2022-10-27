@@ -1,7 +1,13 @@
+import 'dart:io';
+
 import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/material.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:library_management/pages/user/book_info_page.dart';
+import 'package:provider/provider.dart';
+
+import '../../providers/book_provider.dart';
+import '../../utils/constants.dart';
 
 class UserHomePage extends StatefulWidget {
   const UserHomePage({Key? key}) : super(key: key);
@@ -13,12 +19,20 @@ class UserHomePage extends StatefulWidget {
 }
 
 class _UserHomePageState extends State<UserHomePage> {
+  late BookProvider provider;
   String? selectedValue;
 
   @override
+  void didChangeDependencies() {
+    Provider.of<BookProvider>(context, listen: false).getAllBooks();
+    super.didChangeDependencies();
+  }
+
+  @override
   Widget build(BuildContext context) {
+    provider = Provider.of<BookProvider>(context);
     return Scaffold(
-        endDrawer: Drawer(
+      endDrawer: Drawer(
         elevation: 16,
         child: Column(
           children: const [
@@ -26,41 +40,41 @@ class _UserHomePageState extends State<UserHomePage> {
               padding: EdgeInsets.all(8.0),
               child: ListTile(
                 leading: Icon(Icons.person),
-              title: Text(
-              'Name',
-    ),
+                title: Text(
+                  'Name',
+                ),
               ),
             ),
             Padding(
               padding: EdgeInsets.all(8.0),
               child: ListTile(
                 leading: Icon(Icons.save),
-              title: Text(
-              'Saved Book',
-    ),
+                title: Text(
+                  'Saved Book',
+                ),
               ),
             ),
             Padding(
               padding: EdgeInsets.all(8.0),
               child: ListTile(
                 leading: Icon(Icons.history_rounded),
-              title: Text(
-              'Hired Book',
-    ),
+                title: Text(
+                  'Hired Book',
+                ),
               ),
             ),
             Padding(
               padding: EdgeInsets.all(8.0),
               child: ListTile(
                 leading: Icon(Icons.logout),
-              title: Text(
-              'Log Out',
-    ),
+                title: Text(
+                  'Log Out',
+                ),
               ),
             ),
           ],
         ),
-        ),
+      ),
       appBar: AppBar(
         title: Text('User Home Page'),
         actions: [
@@ -77,9 +91,7 @@ class _UserHomePageState extends State<UserHomePage> {
             ),
           ),
         ],
-
       ),
-
       body: SingleChildScrollView(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -152,46 +164,39 @@ class _UserHomePageState extends State<UserHomePage> {
                 ],
               ),
             ),
-            Card(
-              elevation: 2,
-              shape: Border.all(color: Colors.blue.shade300, width: 1),
-              shadowColor: Colors.blueGrey,
-              child: InkWell(
-                onTap: (){
-                  Navigator.pushNamed(context, BookInfoPage.routeName);
-                },
-                child: ListTile(
-                  leading:  Image.asset('images/1.jpg'),
-                  title: Text('Pother Pachali'),
-                  subtitle:
-                      Text('Author: Bivutibushon Bondhopaddhoy Category: Fiction'),
-                  trailing: Row(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Icon(Icons.star_rate),
-                      Text('4.5'),
-                    ],
+            ListView.builder(
+              primary: false,
+              // scrollDirection: Axis.vertical,
+              shrinkWrap: true,
+              itemCount: provider.bookList.length,
+              itemBuilder: (context, index) {
+                final book = provider.bookList[index];
+                return Card(
+                  elevation: 2,
+                  shape: Border.all(color: Colors.blue.shade300, width: 1),
+                  shadowColor: Colors.blueGrey,
+                  child: ListTile(
+                    onTap: () {
+                      Navigator.pushNamed(
+                        context,
+                        BookInfoPage.routeName,
+                        arguments: [book.bookId, book.title]
+                      );
+                    },
+                    leading: Image.file(File(book.image)),
+                    title: Text(book.title),
+                    subtitle: Text(
+                        'Author: ${book.authorName} Category: ${book.category}'),
+                    trailing: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Icon(Icons.star_rate),
+                        Text('4.5'),
+                      ],
+                    ),
                   ),
-                  ),
-              ),
-            ),
-            Card(
-              elevation: 2,
-              shape: Border.all(color: Colors.blue.shade300, width: 1),
-              shadowColor: Colors.blueGrey,
-              child: ListTile(
-                leading:  Image.asset('images/2.jpg'),
-                title: Text('Himu Rimande'),
-                subtitle:
-                    Text('Author: Humayan Ahmed Category: Fiction'),
-                trailing: Row(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Icon(Icons.star_rate),
-                    Text('4.0'),
-                  ],
-                ),
-                ),
+                );
+              },
             ),
           ],
         ),
@@ -204,14 +209,4 @@ final List<String> images = [
   'images/1.jpg',
   'images/2.jpg',
   'images/3.jpg',
-];
-
-final List<String> filter = [
-  'Author',
-  'Published Year',
-  'Fiction',
-  'Nonfiction',
-  'Drama',
-  'Poetry',
-  'Folktale',
 ];

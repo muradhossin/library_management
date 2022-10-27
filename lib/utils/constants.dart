@@ -18,3 +18,13 @@ const List<String> genderList = [
   'Male',
   'Female',
 ];
+
+final List<String> filter = [
+  'Author',
+  'Published Year',
+  'Fiction',
+  'Nonfiction',
+  'Drama',
+  'Poetry',
+  'Folktale',
+];
