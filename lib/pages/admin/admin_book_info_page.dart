@@ -2,13 +2,17 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
+import 'package:library_management/models/book_comment.dart';
 import 'package:library_management/pages/admin/admin_book_list_page.dart';
 import 'package:library_management/pages/admin/new_book_add.dart';
 import 'package:library_management/providers/book_provider.dart';
+import 'package:library_management/providers/rating_provider.dart';
 import 'package:library_management/utils/helper_functions.dart';
 import 'package:provider/provider.dart';
 
 import '../../models/book_model.dart';
+import '../../providers/comment_provider.dart';
+import '../../utils/constants.dart';
 
 class AdminBookInfoPage extends StatefulWidget {
   const AdminBookInfoPage({Key? key}) : super(key: key);
@@ -23,11 +27,16 @@ class _AdminBookInfoPageState extends State<AdminBookInfoPage> {
   late int id;
   late String name;
   late BookProvider provider;
+  late RatingProvider ratingProvider;
+  final txtController = TextEditingController();
+  late CommentProvider commentProvider;
 
   @override
   void didChangeDependencies() {
     final argList = ModalRoute.of(context)!.settings.arguments as List;
     provider = Provider.of<BookProvider>(context, listen: false);
+    ratingProvider = Provider.of<RatingProvider>(context, listen: false);
+    commentProvider = Provider.of<CommentProvider>(context, listen: false);
     id = argList[0];
     name = argList[1];
     super.didChangeDependencies();
@@ -83,18 +92,32 @@ class _AdminBookInfoPageState extends State<AdminBookInfoPage> {
                         ),
                       ),
                     ),
-                    ListTile(
-                      title: Text(book.title),
-                      subtitle: Text(
-                          'Author: ${book.authorName} Category: ${book.category}'),
-                      trailing: Row(
-                        mainAxisSize: MainAxisSize.min,
-                        children: const [
-                          Icon(Icons.star_rate),
-                          Text('4.5'),
-                        ],
+                      ListTile(
+                        title: Text(book.title),
+                        subtitle: Text(
+                            'Author: ${book.authorName} Category: ${book.category}'),
+                        trailing: FutureBuilder<double>(
+                          future: ratingProvider.getBookRating(id),
+                          builder: (context, snapshot) {
+                            if(snapshot.hasData){
+                              final rate = snapshot.data;
+                              return Row(
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  Icon(Icons.star_rate),
+                                  Text(rate!.toStringAsFixed(1)),
+                                ],
+                              );
+                            }
+                            if(snapshot.hasError){
+                              return Text("failed to load data");
+                            }
+                            return CircularProgressIndicator();
+                          },
+
+                        ),
                       ),
-                    ),
+
                     Padding(
                       padding: EdgeInsets.all(8.0),
                       child: Text(
@@ -133,37 +156,46 @@ class _AdminBookInfoPageState extends State<AdminBookInfoPage> {
                         style: Theme.of(context).textTheme.headline5,
                       ),
                     ),
-                    const Card(
-                      shape: RoundedRectangleBorder(
-                          side: BorderSide(
-                        color: Colors.grey,
-                      )),
-                      child: ListTile(
-                        leading: Icon(
-                          Icons.person,
-                          size: 40,
-                        ),
-                        title: Text("Md. Murad Hossin"),
-                        subtitle: Text('This is really nice book.'),
-                      ),
-                    ),
-                    const Card(
-                      shape: RoundedRectangleBorder(
-                          side: BorderSide(
-                        color: Colors.grey,
-                      )),
-                      child: ListTile(
-                        leading: Icon(
-                          Icons.person,
-                          size: 40,
-                        ),
-                        title: Text("Md. Shamim"),
-                        subtitle: Text('Awesome.'),
-                      ),
+                    FutureBuilder<List<BookComment>>(
+                      future: commentProvider.getCommentsByUserId(id),
+                      builder: (context, snapshot) {
+                        if(snapshot.hasData){
+                          final comments = snapshot.data;
+                          return Card(
+                            shape: RoundedRectangleBorder(
+                                side: BorderSide(
+                                  color: Colors.grey,
+                                )),
+                            child: ListView.builder(
+                              primary: false,
+                              shrinkWrap: true,
+                              itemCount: comments?.length,
+                              itemBuilder: (context, index){
+                                final comment = comments![index];
+                                return ListTile(
+                                  leading: Icon(
+                                    Icons.person,
+                                    size: 40,
+                                  ),
+                                  title: Text(comment.name ?? 'unknown'),
+                                  subtitle: Text(comment.user_reviews),
+                                );
+                              },
+
+                            ),
+                          );
+                        }
+                        if(snapshot.hasError){
+                          return Text("failed to laod data");
+                        }
+                        return CircularProgressIndicator();
+                      },
+
                     ),
                     Padding(
                       padding: const EdgeInsets.all(8.0),
                       child: TextFormField(
+                        controller: txtController,
                         cursorColor: Colors.black,
                         maxLines: 10,
                         minLines: 8,
@@ -185,7 +217,12 @@ class _AdminBookInfoPageState extends State<AdminBookInfoPage> {
                         mainAxisAlignment: MainAxisAlignment.end,
                         children: [
                           ElevatedButton(
-                            onPressed: () {},
+                            onPressed: () {
+                              setState(() {
+
+                              });
+                              _saveComment();
+                            },
                             child: Text('Submit'),
                           ),
                         ],
@@ -203,6 +240,24 @@ class _AdminBookInfoPageState extends State<AdminBookInfoPage> {
         ),
       ),
     );
+  }
+  @override
+  void dispose() {
+    txtController.dispose();
+    super.dispose();
+  }
+  void _saveComment() async{
+    final bookComment = BookComment(
+      book_id: id,
+      user_id: 1000,
+      rating_date: getFormattedDate(DateTime.now(), dateTimePattern),
+      user_reviews: txtController.text,
+      name: 'Admin',
+    );
+    commentProvider.insertRating(bookComment);
+    setState(() {
+      txtController.clear();
+    });
   }
 
   // void _deleteBook(BuildContext context, int id, BookProvider provider) {
