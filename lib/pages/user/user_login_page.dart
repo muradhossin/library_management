@@ -142,7 +142,7 @@ class _UserLoginPageState extends State<UserLoginPage> {
           Navigator.pushReplacementNamed(
             context,
             UserHomePage.routeName,
-            arguments: user.userId,
+            arguments: [user.userId, user.name],
           );
         } else {
           _setErrorMsg('Wrong password');

@@ -25,18 +25,18 @@ Future<bool> getAdminLoginStatus() async{
   return pref.getBool('login') ?? false;
 
 }
-const userId = 'userId';
-const adminId = 'adminId';
+// const userId = 'userId';
+// const adminId = 'adminId';
 
-Future<bool> setAdminId(int id) async {
-  final pref = await SharedPreferences.getInstance();
-  return pref.setInt(adminId, id);
-}
-
-Future<int> getAdminId() async {
-  final pref = await SharedPreferences.getInstance();
-  return pref.getInt(adminId) ?? 0;
-}
+// Future<bool> setAdminId(int id) async {
+//   final pref = await SharedPreferences.getInstance();
+//   return pref.setInt(adminId, id);
+// }
+//
+// Future<int> getAdminId() async {
+//   final pref = await SharedPreferences.getInstance();
+//   return pref.getInt(adminId) ?? 0;
+// }
 
 void showMsg(BuildContext context, String msg) =>
     ScaffoldMessenger.of(context)

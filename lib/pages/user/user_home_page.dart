@@ -28,12 +28,15 @@ class _UserHomePageState extends State<UserHomePage> {
   late BookProvider provider;
   String? selectedValue;
   late int id;
+  late String name;
   late RatingProvider ratingProvider;
 
   @override
   void didChangeDependencies() async{
     Provider.of<BookProvider>(context, listen: false).getAllBooks();
-    id = ModalRoute.of(context)!.settings.arguments as int;
+    final argList = ModalRoute.of(context)!.settings.arguments as List;
+    id = argList[0];
+    name = argList[1];
     final providerUser = Provider.of<UserProvider>(context, listen: false);
     ratingProvider = Provider.of<RatingProvider>(context, listen: false);
     super.didChangeDependencies();
@@ -147,7 +150,7 @@ class _UserHomePageState extends State<UserHomePage> {
                       Navigator.pushNamed(
                         context,
                         BookInfoPage.routeName,
-                        arguments: [book.bookId, book.title, id]
+                        arguments: [book.bookId, book.title, id, name]
                       );
                     },
                     leading: Image.file(File(book.image)),

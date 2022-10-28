@@ -3,11 +3,15 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:library_management/custom_widgets/drawer_widget.dart';
+import 'package:library_management/models/book_comment.dart';
 import 'package:library_management/models/book_model.dart';
 import 'package:library_management/models/book_rating.dart';
+import 'package:library_management/models/user_model.dart';
 import 'package:library_management/pages/user/booking_book_page.dart';
 import 'package:library_management/providers/book_provider.dart';
+import 'package:library_management/providers/comment_provider.dart';
 import 'package:library_management/providers/rating_provider.dart';
+import 'package:library_management/providers/user_provider.dart';
 import 'package:library_management/utils/constants.dart';
 import 'package:library_management/utils/helper_functions.dart';
 import 'package:provider/provider.dart';
@@ -30,6 +34,9 @@ class _BookInfoPageState extends State<BookInfoPage> {
   double rating = 0;
   late RatingProvider ratingProvider;
   int count = 0;
+  late UserProvider userProvider;
+  late String userName;
+  late CommentProvider commentProvider;
 
   @override
   void didChangeDependencies() {
@@ -38,7 +45,11 @@ class _BookInfoPageState extends State<BookInfoPage> {
     id = argList[0];
     name = argList[1];
     userId = argList[2];
+    userName = argList[3];
     ratingProvider = Provider.of<RatingProvider>(context, listen: false);
+    userProvider = Provider.of<UserProvider>(context, listen: false);
+    commentProvider = Provider.of<CommentProvider>(context, listen: false);
+
     super.didChangeDependencies();
   }
 
@@ -161,15 +172,16 @@ class _BookInfoPageState extends State<BookInfoPage> {
                           },
                         ),
                         IconButton(
-                          onPressed: (){
-                            setState(() {
-
-                            });
+                          onPressed: () {
+                            setState(() {});
                             _saveRating();
-                            count = count+1;
-
+                            count = count + 1;
                           },
-                          icon: Icon(Icons.send, color: Colors.lightBlue,size: 45,),
+                          icon: Icon(
+                            Icons.send,
+                            color: Colors.lightBlue,
+                            size: 45,
+                          ),
                         ),
                       ],
                     ),
@@ -180,37 +192,44 @@ class _BookInfoPageState extends State<BookInfoPage> {
                         style: Theme.of(context).textTheme.headline5,
                       ),
                     ),
-                    const Card(
-                      shape: RoundedRectangleBorder(
-                          side: BorderSide(
-                        color: Colors.grey,
-                      )),
-                      child: ListTile(
-                        leading: Icon(
-                          Icons.person,
-                          size: 40,
-                        ),
-                        title: Text("Md. Murad Hossin"),
-                        subtitle: Text('This is really nice book.'),
-                      ),
-                    ),
-                    const Card(
-                      shape: RoundedRectangleBorder(
-                          side: BorderSide(
-                        color: Colors.grey,
-                      )),
-                      child: ListTile(
-                        leading: Icon(
-                          Icons.person,
-                          size: 40,
-                        ),
-                        title: Text("Md. Shamim"),
-                        subtitle: Text('Awesome.'),
-                      ),
+                    FutureBuilder<List<BookComment>>(
+                      future: commentProvider.getCommentsByUserId(id),
+                      builder: (context, snapshot) {
+                        if (snapshot.hasData) {
+                          final comments = snapshot.data;
+                          return Card(
+                            shape: RoundedRectangleBorder(
+                                side: BorderSide(
+                              color: Colors.grey,
+                            )),
+                            child: ListView.builder(
+                              primary: false,
+                              shrinkWrap: true,
+                              itemCount: comments?.length,
+                              itemBuilder: (context, index) {
+                                final comment = comments![index];
+                                return ListTile(
+                                  leading: Icon(
+                                    Icons.person,
+                                    size: 40,
+                                  ),
+                                  title: Text(comment.name ?? 'unknown'),
+                                  subtitle: Text(comment.user_reviews),
+                                );
+                              },
+                            ),
+                          );
+                        }
+                        if (snapshot.hasError) {
+                          return Text('Failed to load data');
+                        }
+                        return CircularProgressIndicator();
+                      },
                     ),
                     Padding(
                       padding: const EdgeInsets.all(8.0),
                       child: TextFormField(
+                        controller: txtController,
                         cursorColor: Colors.black,
                         maxLines: 10,
                         minLines: 8,
@@ -232,7 +251,10 @@ class _BookInfoPageState extends State<BookInfoPage> {
                         mainAxisAlignment: MainAxisAlignment.end,
                         children: [
                           ElevatedButton(
-                            onPressed: () {},
+                            onPressed: () {
+                              setState(() {});
+                              _saveComment();
+                            },
                             child: Text('Submit'),
                           ),
                         ],
@@ -251,11 +273,13 @@ class _BookInfoPageState extends State<BookInfoPage> {
       ),
     );
   }
+
   @override
   void dispose() {
     txtController.dispose();
     super.dispose();
   }
+
   _saveRating() async {
     final bookRating = BookRating(
       book_id: id,
@@ -263,10 +287,11 @@ class _BookInfoPageState extends State<BookInfoPage> {
       rating_date: getFormattedDate(DateTime.now(), dateTimePattern),
       user_reviews: txtController.text,
       rating: rating,
+      name: userName,
     );
     ratingProvider.insertRating(bookRating);
 
-    if(count != 0) {
+    if (count != 0) {
       ratingProvider.updateRating(bookRating).then((value) {
         setState(() {
           txtController.clear();
@@ -287,5 +312,19 @@ class _BookInfoPageState extends State<BookInfoPage> {
         print(error.toString());
       });
     }
+  }
+
+  void _saveComment() async {
+    final bookComment = BookComment(
+      book_id: id,
+      user_id: userId,
+      rating_date: getFormattedDate(DateTime.now(), dateTimePattern),
+      user_reviews: txtController.text,
+      name: userName,
+    );
+    commentProvider.insertRating(bookComment);
+    setState(() {
+      txtController.clear();
+    });
   }
 }

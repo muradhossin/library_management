@@ -1,4 +1,5 @@
 import 'package:library_management/models/admin_model.dart';
+import 'package:library_management/models/book_comment.dart';
 import 'package:library_management/models/book_model.dart';
 import 'package:library_management/models/booking_model.dart';
 import 'package:library_management/models/user_model.dart';
@@ -52,9 +53,17 @@ class DbHelper{
   static const String createTableRating = '''create table $tableRating(
   $tblRatingColBookId integer,
   $tblRatingColUserId integer,
+  $tblRatingColUserName text,
   $tblRatingColDate text,
   $tblRatingColUserReviews text,
   $tblColRating real)''';
+
+  static const String createTableComment = '''create table $tableComment(
+  $tblCommentColBookId integer,
+  $tblCommentColUserId integer,
+  $tblCommentColDate text,
+  $tblCommentColUserReviews text,
+  $tblCommentColUserName text)''';
   
   
   static Future<Database> open() async {
@@ -66,6 +75,7 @@ class DbHelper{
      await db.execute(createTableBook);
      await db.execute(createTableBooking);
      await db.execute(createTableRating);
+     await db.execute(createTableComment);
     });
   }
 
@@ -92,6 +102,10 @@ class DbHelper{
   static Future<int> insertRating(BookRating bookRating) async {
     final db = await open();
     return db.insert(tableRating, bookRating.toMap());
+  }
+  static Future<int> insertComment(BookComment bookComment) async {
+    final db = await open();
+    return db.insert(tableComment, bookComment.toMap());
   }
 
   static Future<UserModel?> getUserByEmail(String email) async {
@@ -153,6 +167,17 @@ class DbHelper{
         BookRating.fromMap(mapList[index]));
   }
 
+  static Future<List<BookRating>> getRateByUserId(int id) async {
+    final db = await open();
+     final mapList = await db.query(tableRating, where: '$tblRatingColBookId = ?', whereArgs: [id]);
+     return List.generate(mapList.length, (index) => BookRating.fromMap(mapList[index]));
+  }
+
+  static Future<List<BookComment>> getCommentsByUserId(int id) async {
+    final db = await open();
+    final mapList = await db.query(tableComment, where: '$tblCommentColBookId = ?', whereArgs: [id]);
+    return List.generate(mapList.length, (index) => BookComment.fromMap(mapList[index]));
+  }
 
 
   static Future<int> updateRating(BookRating bookRating) async {

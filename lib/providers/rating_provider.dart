@@ -20,12 +20,9 @@ class RatingProvider extends ChangeNotifier{
     return _calculateRating(ratingList);
   }
 
-  Future<List<BookRating>> getRating(int id) async {
-    return await DbHelper.getRatingsByBookId(id);
 
-
-  }
-
+  Future<List<BookRating>> getRateByUserId(int id) =>
+      DbHelper.getRateByUserId(id);
 
   double _calculateRating(List<BookRating> ratingList) {
     double rating = 0.0;
