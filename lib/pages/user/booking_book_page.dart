@@ -2,6 +2,8 @@ import 'package:date_format/date_format.dart';
 import 'package:flutter/material.dart';
 import 'package:library_management/models/booking_model.dart';
 import 'package:library_management/models/user_model.dart';
+import 'package:library_management/pages/user/book_info_page.dart';
+import 'package:library_management/pages/user/user_home_page.dart';
 import 'package:library_management/providers/booking_provider.dart';
 import 'package:library_management/providers/user_provider.dart';
 import 'package:provider/provider.dart';
@@ -232,6 +234,21 @@ class _BookingBookPageState extends State<BookingBookPage> {
                   child: ElevatedButton(
                     onPressed: () {
                       saveBooking();
+                      showDialog(
+                          context: context,
+                          builder: (context) => AlertDialog(
+                        title: const Text('Your booking is Confirmed'),
+                        content:  Text('Please collect your book on this day $hireDate'),
+                        actions: [
+                          TextButton(
+                            onPressed: () {
+
+                              Navigator.of(context).popUntil(ModalRoute.withName('/userhomepage'));
+                            },
+                            child: const Text('Okay'),
+                          ),
+                        ],
+                      ),);
                     },
                     child: const Text("Confirm"),
                   ),
@@ -243,6 +260,26 @@ class _BookingBookPageState extends State<BookingBookPage> {
                   padding: const EdgeInsets.all(8.0),
                   child: ElevatedButton(
                     onPressed: () {
+                      showDialog(
+                          context: context,
+                          builder: (context) => AlertDialog(
+                        title: const Text('Order Cancel'),
+                        content: const Text('Are you sure?'),
+                        actions: [
+                          TextButton(
+                            onPressed: (){
+                              Navigator.pop(context);
+                            },
+                            child: const Text('No'),
+                          ),
+                          TextButton(
+                            onPressed: () {
+                              Navigator.of(context).popUntil(ModalRoute.withName('/userhomepage'));
+                            },
+                            child: const Text("Yes"),
+                          ),
+                        ],
+                      ),);
 
                     },
                     child: const Text("Cancel"),
@@ -291,7 +328,10 @@ class _BookingBookPageState extends State<BookingBookPage> {
         address: addressController.text,
         phoneNumber: phoneNumberController.text,
         hiringDate: hireDate.toString(),
-        returnDate: returnDate.toString(),);
+        returnDate: returnDate.toString(),
+        bookName: bookName,
+      );
+
       bookingProvider.insertBooking(booking);
   }
 

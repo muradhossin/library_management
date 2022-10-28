@@ -5,6 +5,7 @@ const String tblBookingColAddress = 'address';
 const String tblBookingColPhoneNumber = 'phone_number';
 const String tblBookingColHiringDate = 'hiring_date';
 const String tblBookingColReturnDate = 'return_date';
+const String tblBookingColBookName= 'bookName';
 
 class BookingModel {
   int? bookingId;
@@ -13,6 +14,7 @@ class BookingModel {
   String phoneNumber;
   String hiringDate;
   String returnDate;
+  String bookName;
 
   BookingModel({
     this.bookingId,
@@ -21,6 +23,7 @@ class BookingModel {
     required this.phoneNumber,
     required this.hiringDate,
     required this.returnDate,
+    required this.bookName,
   });
 
   Map<String, dynamic> toMap() {
@@ -30,6 +33,7 @@ class BookingModel {
       tblBookingColPhoneNumber: phoneNumber,
       tblBookingColHiringDate: hiringDate,
       tblBookingColReturnDate: returnDate,
+      tblBookingColBookName: bookName,
     };
 
     if (bookingId != null) {
@@ -45,5 +49,6 @@ class BookingModel {
         phoneNumber: map[tblBookingColPhoneNumber],
         hiringDate: map[tblBookingColHiringDate],
         returnDate: map[tblBookingColReturnDate],
+        bookName: map[tblBookingColBookName],
       );
 }

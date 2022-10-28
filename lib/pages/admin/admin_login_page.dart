@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:library_management/pages/admin/admin_book_list_page.dart';
+import 'package:library_management/pages/admin/admin_home_page.dart';
 import 'package:library_management/pages/admin/admin_signup.dart';
 import 'package:library_management/pages/user/user_home_page.dart';
 import 'package:library_management/pages/user/user_signup.dart';
@@ -144,7 +145,7 @@ class _AdminLoginPageState extends State<AdminLoginPage> {
 
       } else{
         if(password == admin.password){
-            Navigator.pushReplacementNamed(context, AdminBookListPage.routeName);
+            Navigator.pushReplacementNamed(context, AdminHomePage.routeName);
         }else {
             _setErroMsg('Wrong password');
         }

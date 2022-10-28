@@ -7,4 +7,8 @@ class BookingProvider extends ChangeNotifier{
   Future<int> insertBooking(BookingModel bookingModel) {
     return DbHelper.insertBooking(bookingModel);
   }
+
+  Future<List<BookingModel>> getAllBooking(){
+    return DbHelper.getAllBooking();
+  }
 }

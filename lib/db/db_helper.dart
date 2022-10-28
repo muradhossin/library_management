@@ -48,7 +48,8 @@ class DbHelper{
   $tblBookingColAddress text,
   $tblBookingColPhoneNumber text,
   $tblBookingColHiringDate text,
-  $tblBookingColReturnDate text
+  $tblBookingColReturnDate text,
+  $tblBookingColBookName text
   )''';
 
   static const String createTableRating = '''create table $tableRating(
@@ -185,6 +186,12 @@ class DbHelper{
     final db = await open();
     return db.update(tableRating, bookRating.toMap(),
       where: '$tblRatingColBookId = ? and $tblRatingColUserId = ?', whereArgs: [bookRating.book_id, bookRating.user_id],);
+  }
+
+  static Future<List<BookingModel>> getAllBooking() async{
+    final db = await open();
+    final mapList = await db.query(tableBooking);
+    return List.generate(mapList.length, (index) => BookingModel.fromMap(mapList[index]));
   }
 
 
