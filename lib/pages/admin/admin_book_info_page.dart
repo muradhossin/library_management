@@ -178,7 +178,13 @@ class _AdminBookInfoPageState extends State<AdminBookInfoPage> {
                                     size: 40,
                                   ),
                                   title: Text(comment.name ?? 'unknown'),
-                                  subtitle: Text(comment.user_reviews),
+                                  subtitle: Column(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: [
+                                      Text(comment.user_reviews ),
+                                      Text(comment.rating_date),
+                                    ],
+                                  ),
                                 );
                               },
 

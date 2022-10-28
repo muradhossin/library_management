@@ -45,6 +45,7 @@ class DbHelper{
   static const String createTableBooking = '''create table $tableBooking(
   $tblBookingColId integer primary key autoincrement,
   $tblBookingColName text,
+  $tblBookingColAddress text,
   $tblBookingColPhoneNumber text,
   $tblBookingColHiringDate text,
   $tblBookingColReturnDate text

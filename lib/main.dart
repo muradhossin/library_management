@@ -18,6 +18,7 @@ import 'package:library_management/pages/user/user_login_page.dart';
 import 'package:library_management/pages/user/user_signup.dart';
 import 'package:library_management/providers/admin_provider.dart';
 import 'package:library_management/providers/book_provider.dart';
+import 'package:library_management/providers/booking_provider.dart';
 import 'package:library_management/providers/comment_provider.dart';
 import 'package:library_management/providers/rating_provider.dart';
 import 'package:library_management/providers/user_provider.dart';
@@ -31,6 +32,7 @@ void main() {
       ChangeNotifierProvider(create: (context) => BookProvider()),
       ChangeNotifierProvider(create: (context) => RatingProvider()),
       ChangeNotifierProvider(create: (context) => CommentProvider()),
+      ChangeNotifierProvider(create: (context) => BookingProvider()),
 
 
     ],

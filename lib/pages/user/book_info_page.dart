@@ -71,7 +71,7 @@ class _BookInfoPageState extends State<BookInfoPage> {
           ),
           IconButton(
             onPressed: () {
-              Navigator.pushNamed(context, BookingBookPage.routeName);
+              Navigator.pushNamed(context, BookingBookPage.routeName, arguments: [name, userName, userId]);
             },
             icon: const Icon(Icons.shopping_cart),
           ),
@@ -214,7 +214,13 @@ class _BookInfoPageState extends State<BookInfoPage> {
                                     size: 40,
                                   ),
                                   title: Text(comment.name ?? 'unknown'),
-                                  subtitle: Text(comment.user_reviews),
+                                  subtitle: Column(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: [
+                                      Text(comment.user_reviews ),
+                                      Text(comment.rating_date),
+                                    ],
+                                  ),
                                 );
                               },
                             ),
