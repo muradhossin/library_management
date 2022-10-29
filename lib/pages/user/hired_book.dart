@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:library_management/models/booking_model.dart';
 import 'package:library_management/pages/admin/admin_book_list_page.dart';
+import 'package:library_management/pages/user/user_home_page.dart';
 import 'package:library_management/providers/booking_provider.dart';
 import 'package:provider/provider.dart';
 
@@ -18,7 +19,7 @@ class _HiredBookState extends State<HiredBook> {
   late BookingProvider bookingProvider;
   late int userid;
   late BookingModel bookingModel;
-
+  var penaltyAmount = 0;
   @override
   void didChangeDependencies() async {
     bookingProvider = Provider.of<BookingProvider>(context, listen: false);
@@ -38,6 +39,8 @@ class _HiredBookState extends State<HiredBook> {
             child: IconButton(
               onPressed: (){
                 Navigator.of(context).popUntil(ModalRoute.withName('/userhomepage'));
+                // Navigator.pop(context);
+
               },
               icon: Icon(Icons.home, size:40,),
             ),
@@ -65,6 +68,15 @@ class _HiredBookState extends State<HiredBook> {
                     itemCount: bookingBook?.length,
                     itemBuilder: (context, index){
                       final book = bookingBook![index];
+                      var now = DateTime.now();
+                      var returnDate = DateTime.parse(book.returnDate);
+                      var daysRemaining = returnDate.difference(now);
+                      if((daysRemaining.inDays) < 0){
+                        penaltyAmount = (daysRemaining.inDays) * (-50);
+                      }else{
+                        penaltyAmount = 0;
+                      }
+
                       return  Padding(
                         padding: const EdgeInsets.all(8.0),
                         child: Card(
@@ -78,8 +90,10 @@ class _HiredBookState extends State<HiredBook> {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Text('Booking ID: ${book.bookingId}'),
-                                Text('Order date: ${book.hiringDate}'),
+                                Text('Hire date: ${book.hiringDate}'),
                                 Text('Return date: ${book.returnDate}'),
+                                Text('Days remaining: ${daysRemaining.inDays} day'),
+                                Text('Amount of penalty: $penaltyAmount TK'),
                               ],
                             ),
                           ),

@@ -14,7 +14,7 @@ class AdminHomePage extends StatefulWidget {
 
 class _AdminHomePageState extends State<AdminHomePage> {
   late BookingProvider bookingProvider;
-
+  int penaltyAmount = 0;
   @override
   void didChangeDependencies() {
     bookingProvider = Provider.of<BookingProvider>(context, listen: false);
@@ -59,6 +59,14 @@ class _AdminHomePageState extends State<AdminHomePage> {
                     itemCount: bookingList?.length,
                     itemBuilder: (context, index){
                       final booking = bookingList![index];
+                      final now = DateTime.now();
+                      final returnDate = DateTime.parse(booking.returnDate);
+                      final daysRemaining = returnDate.difference(now);
+                      if((daysRemaining.inDays) < 0){
+                        penaltyAmount = (daysRemaining.inDays) * (-50);
+                      }else{
+                        penaltyAmount = 0;
+                      }
                       return Padding(
                         padding: const EdgeInsets.all(8.0),
                         child: Card(
@@ -75,8 +83,10 @@ class _AdminHomePageState extends State<AdminHomePage> {
                                 Text('Booking ID: ${booking.bookingId}'),
                                 Text('Phone Number: ${booking.phoneNumber}'),
                                 Text('Book name: ${booking.bookName}'),
-                                Text('Order date: ${booking.hiringDate}'),
+                                Text('Hire date: ${booking.hiringDate}'),
                                 Text('Return date: ${booking.returnDate}'),
+                                Text('Days remaining: ${daysRemaining.inDays} day'),
+                                Text('Amount of penalty: $penaltyAmount TK'),
                               ],
                             ),
 

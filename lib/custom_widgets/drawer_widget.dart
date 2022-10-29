@@ -56,7 +56,7 @@ class _DrawerWidgetState extends State<DrawerWidget> {
                   padding: EdgeInsets.all(8.0),
                   child: ListTile(
                     onTap: (){
-                      Navigator.pushReplacementNamed(context, HiredBook.routeName, arguments: widget.id);
+                      Navigator.pushNamed(context, HiredBook.routeName, arguments: widget.id);
                     },
                     leading: Icon(Icons.history_rounded),
                     title: Text(
