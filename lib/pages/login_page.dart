@@ -35,11 +35,11 @@ class LoginPage extends StatelessWidget {
                 color: Colors.white,
               ),
               child: Padding(
-                padding: const EdgeInsets.all(23),
+                padding: const EdgeInsets.all(8),
                 child: ListView(
                   children: <Widget>[
                     Padding(
-                      padding: const EdgeInsets.fromLTRB(0, 20, 0, 20),
+                      padding: const EdgeInsets.fromLTRB(20, 20, 20, 20),
                       child: Container(
                         color:const Color(0xfff5f5f5),
                         child: TextFormField(

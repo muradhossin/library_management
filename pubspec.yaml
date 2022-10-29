@@ -45,6 +45,9 @@ dependencies:
   intl:
   sqflite:
   image_picker:
+  shared_preferences:
+  date_format: ^2.0.7
+
 
 dev_dependencies:
   flutter_test:
