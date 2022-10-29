@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:library_management/models/booking_model.dart';
 import 'package:library_management/models/user_model.dart';
 import 'package:library_management/pages/user/book_info_page.dart';
+import 'package:library_management/pages/user/hired_book.dart';
 import 'package:library_management/pages/user/user_home_page.dart';
 import 'package:library_management/providers/booking_provider.dart';
 import 'package:library_management/providers/user_provider.dart';
@@ -242,8 +243,7 @@ class _BookingBookPageState extends State<BookingBookPage> {
                         actions: [
                           TextButton(
                             onPressed: () {
-
-                              Navigator.of(context).popUntil(ModalRoute.withName('/userhomepage'));
+                              Navigator.pushReplacementNamed(context, HiredBook.routeName, arguments: userID);
                             },
                             child: const Text('Okay'),
                           ),
@@ -330,6 +330,7 @@ class _BookingBookPageState extends State<BookingBookPage> {
         hiringDate: hireDate.toString(),
         returnDate: returnDate.toString(),
         bookName: bookName,
+        userId: userID,
       );
 
       bookingProvider.insertBooking(booking);

@@ -13,6 +13,7 @@ import 'package:library_management/pages/home_page.dart';
 import 'package:library_management/pages/login_page.dart';
 import 'package:library_management/pages/user/book_info_page.dart';
 import 'package:library_management/pages/user/booking_book_page.dart';
+import 'package:library_management/pages/user/hired_book.dart';
 import 'package:library_management/pages/user/user_home_page.dart';
 import 'package:library_management/pages/user/user_login_page.dart';
 import 'package:library_management/pages/user/user_signup.dart';
@@ -64,6 +65,7 @@ class MyApp extends StatelessWidget {
         UserLoginPage.routeName: (context) => UserLoginPage(),
         AdminLoginPage.routeName: (context) => AdminLoginPage(),
         NewBookAdd.routeName: (context) => NewBookAdd(),
+        HiredBook.routeName: (context) => HiredBook(),
       },
     );
   }

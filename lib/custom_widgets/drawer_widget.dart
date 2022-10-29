@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:library_management/pages/user/booking_book_page.dart';
 import 'package:provider/provider.dart';
 
 import '../models/user_model.dart';
+import '../pages/user/hired_book.dart';
 import '../pages/user/user_login_page.dart';
 import '../providers/book_provider.dart';
 import '../providers/user_provider.dart';
@@ -53,6 +55,9 @@ class _DrawerWidgetState extends State<DrawerWidget> {
                 Padding(
                   padding: EdgeInsets.all(8.0),
                   child: ListTile(
+                    onTap: (){
+                      Navigator.pushReplacementNamed(context, HiredBook.routeName, arguments: widget.id);
+                    },
                     leading: Icon(Icons.history_rounded),
                     title: Text(
                       'Hired Book',

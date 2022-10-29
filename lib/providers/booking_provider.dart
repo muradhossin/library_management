@@ -11,4 +11,8 @@ class BookingProvider extends ChangeNotifier{
   Future<List<BookingModel>> getAllBooking(){
     return DbHelper.getAllBooking();
   }
+
+  Future<List<BookingModel>> getBookingBookByUserId(int id){
+    return DbHelper.getBookingBookByUserId(id);
+  }
 }

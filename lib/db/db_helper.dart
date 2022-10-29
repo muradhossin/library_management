@@ -44,6 +44,7 @@ class DbHelper{
 
   static const String createTableBooking = '''create table $tableBooking(
   $tblBookingColId integer primary key autoincrement,
+  $tblBookingColUserId integer,
   $tblBookingColName text,
   $tblBookingColAddress text,
   $tblBookingColPhoneNumber text,
@@ -194,6 +195,11 @@ class DbHelper{
     return List.generate(mapList.length, (index) => BookingModel.fromMap(mapList[index]));
   }
 
-
+  static Future<List<BookingModel>> getBookingBookByUserId(int id) async {
+    final db = await open();
+    final mapList = await db.query(tableBooking,
+      where: '$tblBookingColUserId = ?', whereArgs: [id],);
+    return List.generate(mapList.length, (index) => BookingModel.fromMap(mapList[index]));
+  }
 
 }

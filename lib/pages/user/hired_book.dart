@@ -4,20 +4,26 @@ import 'package:library_management/pages/admin/admin_book_list_page.dart';
 import 'package:library_management/providers/booking_provider.dart';
 import 'package:provider/provider.dart';
 
-class AdminHomePage extends StatefulWidget {
-  const AdminHomePage({Key? key}) : super(key: key);
-  static const String routeName = '/adminhomepage';
+import '../../providers/user_provider.dart';
+
+class HiredBook extends StatefulWidget {
+  const HiredBook({Key? key}) : super(key: key);
+  static const String routeName = '/hiredbook';
 
   @override
-  State<AdminHomePage> createState() => _AdminHomePageState();
+  State<HiredBook> createState() => _HiredBookState();
 }
 
-class _AdminHomePageState extends State<AdminHomePage> {
+class _HiredBookState extends State<HiredBook> {
   late BookingProvider bookingProvider;
+  late int userid;
+  late BookingModel bookingModel;
 
   @override
-  void didChangeDependencies() {
+  void didChangeDependencies() async {
     bookingProvider = Provider.of<BookingProvider>(context, listen: false);
+    userid = ModalRoute.of(context)!.settings.arguments as int;
+
     super.didChangeDependencies();
   }
 
@@ -25,15 +31,15 @@ class _AdminHomePageState extends State<AdminHomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Admin Home Page'),
+        title: const Text('Hired Book Info'),
         actions: [
-          TextButton(
-            onPressed: () {
-              Navigator.pushNamed(context, AdminBookListPage.routeName);
-            },
-            child: Text(
-              'Book Store',
-              style: TextStyle(color: Colors.amber, fontSize: 25),
+          Padding(
+            padding: const EdgeInsets.only(right: 10),
+            child: IconButton(
+              onPressed: (){
+                Navigator.of(context).popUntil(ModalRoute.withName('/userhomepage'));
+              },
+              icon: Icon(Icons.home, size:40,),
             ),
           ),
         ],
@@ -44,46 +50,43 @@ class _AdminHomePageState extends State<AdminHomePage> {
             Center(
               child: Card(
                 elevation: 5,
-                child: Text('Requested Book List',
+                child: Text('Hired Book List',
                     style: Theme.of(context).textTheme.headline4),
               ),
             ),
             FutureBuilder<List<BookingModel>>(
-              future: bookingProvider.getAllBooking(),
+              future: bookingProvider.getBookingBookByUserId(userid),
               builder: (context, snapshot) {
                 if (snapshot.hasData) {
-                  final bookingList = snapshot.data;
+                  final bookingBook = snapshot.data;
                   return ListView.builder(
-                    shrinkWrap: true,
                     primary: false,
-                    itemCount: bookingList?.length,
+                    shrinkWrap: true,
+                    itemCount: bookingBook?.length,
                     itemBuilder: (context, index){
-                      final booking = bookingList![index];
-                      return Padding(
+                      final book = bookingBook![index];
+                      return  Padding(
                         padding: const EdgeInsets.all(8.0),
                         child: Card(
                           shape: RoundedRectangleBorder(
-                            side: BorderSide(color: Colors.blue)
-                          ),
+                              side: BorderSide(color: Colors.blue)),
                           elevation: 5,
                           child: ListTile(
                             leading: Icon(Icons.bookmark_border),
-                            title: Text("User Name: ${booking.name}"),
+                            title: Text("Book name: ${book!.bookName}"),
                             subtitle: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                Text('Booking ID: ${booking.bookingId}'),
-                                Text('Phone Number: ${booking.phoneNumber}'),
-                                Text('Book name: ${booking.bookName}'),
-                                Text('Order date: ${booking.hiringDate}'),
-                                Text('Return date: ${booking.returnDate}'),
+                                Text('Booking ID: ${book.bookingId}'),
+                                Text('Order date: ${book.hiringDate}'),
+                                Text('Return date: ${book.returnDate}'),
                               ],
                             ),
-
                           ),
                         ),
                       );
                     },
+
                   );
                 }
 
