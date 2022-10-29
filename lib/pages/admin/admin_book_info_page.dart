@@ -1,187 +1,296 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
+import 'package:library_management/models/book_comment.dart';
+import 'package:library_management/pages/admin/admin_book_list_page.dart';
+import 'package:library_management/pages/admin/new_book_add.dart';
+import 'package:library_management/providers/book_provider.dart';
+import 'package:library_management/providers/rating_provider.dart';
+import 'package:library_management/utils/helper_functions.dart';
+import 'package:provider/provider.dart';
 
-class AdminBookInfoPage extends StatelessWidget {
+import '../../models/book_model.dart';
+import '../../providers/comment_provider.dart';
+import '../../utils/constants.dart';
+
+class AdminBookInfoPage extends StatefulWidget {
   const AdminBookInfoPage({Key? key}) : super(key: key);
 
   static const String routeName = '/adminbookinfopage';
 
   @override
+  State<AdminBookInfoPage> createState() => _AdminBookInfoPageState();
+}
+
+class _AdminBookInfoPageState extends State<AdminBookInfoPage> {
+  late int id;
+  late String name;
+  late BookProvider provider;
+  late RatingProvider ratingProvider;
+  final txtController = TextEditingController();
+  late CommentProvider commentProvider;
+
+  @override
+  void didChangeDependencies() {
+    final argList = ModalRoute.of(context)!.settings.arguments as List;
+    provider = Provider.of<BookProvider>(context, listen: false);
+    ratingProvider = Provider.of<RatingProvider>(context, listen: false);
+    commentProvider = Provider.of<CommentProvider>(context, listen: false);
+    id = argList[0];
+    name = argList[1];
+    super.didChangeDependencies();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Book Details'),
+        title: Text(name),
         actions: [
           IconButton(
-            onPressed: () {},
+            onPressed: () {
+              Navigator.pushNamed(context, NewBookAdd.routeName, arguments: id)
+                  .then((value) {
+                setState(() {
+                  name = value as String;
+                });
+              });
+            },
+            icon: Icon(Icons.edit),
+          ),
+          IconButton(
+            onPressed: () {
+              deleteBook(context, id, provider);
+            },
             icon: const Icon(Icons.delete_forever),
           ),
         ],
       ),
       body: SingleChildScrollView(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Container(
-                width: double.infinity,
-                height: 400,
-                decoration: BoxDecoration(
-                  shape: BoxShape.rectangle,
-                  borderRadius: BorderRadius.circular(15.0),
-                  image: const DecorationImage(
-                      image: AssetImage('images/1.jpg'), fit: BoxFit.fill),
-                ),
-              ),
-            ),
-            ListTile(
-              title: const Text('Pother Pachali'),
-              subtitle:
-              const Text('Author: Bivutibushon Bondhopaddhoy Category: Fiction'),
-              trailing: Row(
-                mainAxisSize: MainAxisSize.min,
-                children: const [
-                  Icon(Icons.star_rate),
-                  Text('4.5'),
-                ],
-              ),
-            ),
-            const Padding(
-              padding: EdgeInsets.all(8.0),
-              child: Text(
-                "Horihor Ray, an impoverished Brahmin, "
-                    "lives in the village of Nischindipur. "
-                    "Indir Thakrun, an old widowed woman, "
-                    "who had nobody to look after her, "
-                    "takes shelter in the house of Horihor, "
-                    "to whom she is distantly related. "
-                    "Horihor's wife Shorbojoya, an ill-tempered lady, "
-                    "cannot bear the sight of the old woman. "
-                    "She is therefore given a tumble-down thatched hut to live in. "
-                    "However, Durga, Shorbojoya's six-year-old daughter, "
-                    "is very fond of Indir Thakrun and stays with her "
-                    "for hours to listen to fairy-tales.After some time,"
-                    " Shorbojoya gives birth to a son. Shorbojoya is jealous"
-                    " of Indir Thakrun as she thinks that Durga is more fond "
-                    "of the old woman than of her mother. Indir Thakrun is "
-                    "mercilessly turned out of the hut for a trifling reason. "
-                    "The helpless old woman implores for shelter in her dying "
-                    "moments but she is heartlessly refused; she passes away in "
-                    "a rice-barn.Four or five years later, the boy named Apu "
-                    "grows up to be very inquisitive and sensitive to the beauty "
-                    "and mystery of nature. He and his elder sister Durga are always "
-                    "out for some new adventures like roaming through the forests, "
-                    "taking part in indigenous games and plucking flowers and fruits "
-                    "stealthily. Apu is admitted into the village school where many "
-                    "village elders assemble and talk on diverse subjects. Apu is "
-                    "taken by his father to a client's house. It is the first "
-                    "time that Apu gets a glimpse of the outside world which "
-                    "fills his mind with joy and excitement. The village "
-                    "festivity, the fair, and the Jatra performance, all "
-                    "bring variety and thrill to the monotonous flow of "
-                    "village life. Durga, restless yet innocent, dies "
-                    "suddenly, plunging the whole family into grief and "
-                    "leaving her little brother all alone. Horihor leaves "
-                    "home for a long period and struggles desperately to "
-                    "earn a livelihood. After returning home he decides to "
-                    "leave Nischindipur. They pack up and go to the railway "
-                    "station. As the train steams in, they board the train "
-                    "leaving behind Nischindipur forever with its many sweet and sour memories.",
-                textAlign: TextAlign.justify,
-              ),
-            ),
-            Center(
-              child: Text(
-                'Give Your Rating',
-                style: Theme.of(context).textTheme.headline5,
-              ),
-            ),
-            Center(
-              child: RatingBar.builder(
-                initialRating: 3,
-                minRating: 1,
-                direction: Axis.horizontal,
-                allowHalfRating: true,
-                itemCount: 5,
-                itemPadding: const EdgeInsets.symmetric(horizontal: 4.0),
-                itemBuilder: (context, _) => const Icon(
-                  Icons.star,
-                  color: Colors.amber,
-                ),
-                onRatingUpdate: (rating) {
-                  print(rating);
-                },
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Text(
-                'Comments',
-                style: Theme.of(context).textTheme.headline5,
-              ),
-            ),
-            const Card(
-              shape: RoundedRectangleBorder(
-                  side: BorderSide(
-                    color: Colors.grey,
-                  )),
-              child: ListTile(
-                leading: Icon(
-                  Icons.person,
-                  size: 40,
-                ),
-                title: Text("Md. Murad Hossin"),
-                subtitle: Text('This is really nice book.'),
-              ),
-            ),
-            const Card(
-              shape: RoundedRectangleBorder(
-                  side: BorderSide(
-                    color: Colors.grey,
-                  )),
-              child: ListTile(
-                leading: Icon(
-                  Icons.person,
-                  size: 40,
-                ),
-                title: Text("Md. Shamim"),
-                subtitle: Text('Awesome.'),
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: TextFormField(
-                cursorColor: Colors.black,
-                maxLines: 10,
-                minLines: 8,
-                style: const TextStyle(
-                  color: Colors.black,
-                ),
-                decoration: InputDecoration(
-                    hintText: "Type your comment here...",
-                    contentPadding: const EdgeInsets.all(10.0),
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(10.0),
-                    )),
-              ),
-            ),
-            Padding(
-              padding:
-              const EdgeInsets.only(right: 20.0, top: 8.0, bottom: 20.0),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: [
-                  ElevatedButton(
-                    onPressed: () {},
-                    child: Text('Submit'),
-                  ),
-                ],
-              ),
-            ),
-          ],
+        child: Center(
+          child: FutureBuilder<BookModel>(
+            future: provider.getBookById(id),
+            builder: (context, snapshot) {
+              if (snapshot.hasData) {
+                final book = snapshot.data;
+                return Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: [
+                    Padding(
+                      padding: EdgeInsets.all(8.0),
+                      child: Container(
+                        width: double.infinity,
+                        height: 400,
+                        decoration: BoxDecoration(
+                          shape: BoxShape.rectangle,
+                          borderRadius: BorderRadius.circular(15.0),
+                        ),
+                        child: Image.file(
+                          File(book!.image),
+                          fit: BoxFit.fill,
+                        ),
+                      ),
+                    ),
+                      ListTile(
+                        title: Text(book.title),
+                        subtitle: Text(
+                            'Author: ${book.authorName} Category: ${book.category}'),
+                        trailing: FutureBuilder<double>(
+                          future: ratingProvider.getBookRating(id),
+                          builder: (context, snapshot) {
+                            if(snapshot.hasData){
+                              final rate = snapshot.data;
+                              return Row(
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  Icon(Icons.star_rate),
+                                  Text(rate!.toStringAsFixed(1)),
+                                ],
+                              );
+                            }
+                            if(snapshot.hasError){
+                              return Text("failed to load data");
+                            }
+                            return CircularProgressIndicator();
+                          },
+
+                        ),
+                      ),
+
+                    Padding(
+                      padding: EdgeInsets.all(8.0),
+                      child: Text(
+                        book.description,
+                        textAlign: TextAlign.justify,
+                      ),
+                    ),
+                    // Center(
+                    //   child: Text(
+                    //     'Give Your Rating',
+                    //     style: Theme.of(context).textTheme.headline5,
+                    //   ),
+                    // ),
+                    // Center(
+                    //   child: RatingBar.builder(
+                    //     initialRating: 3,
+                    //     minRating: 1,
+                    //     direction: Axis.horizontal,
+                    //     allowHalfRating: true,
+                    //     itemCount: 5,
+                    //     itemPadding:
+                    //         const EdgeInsets.symmetric(horizontal: 4.0),
+                    //     itemBuilder: (context, _) => const Icon(
+                    //       Icons.star,
+                    //       color: Colors.amber,
+                    //     ),
+                    //     onRatingUpdate: (rating) {
+                    //       print(rating);
+                    //     },
+                    //   ),
+                    // ),
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Text(
+                        'Comments',
+                        style: Theme.of(context).textTheme.headline5,
+                      ),
+                    ),
+                    FutureBuilder<List<BookComment>>(
+                      future: commentProvider.getCommentsByUserId(id),
+                      builder: (context, snapshot) {
+                        if(snapshot.hasData){
+                          final comments = snapshot.data;
+                          return Card(
+                            shape: RoundedRectangleBorder(
+                                side: BorderSide(
+                                  color: Colors.grey,
+                                )),
+                            child: ListView.builder(
+                              primary: false,
+                              shrinkWrap: true,
+                              itemCount: comments?.length,
+                              itemBuilder: (context, index){
+                                final comment = comments![index];
+                                return ListTile(
+                                  leading: Icon(
+                                    Icons.person,
+                                    size: 40,
+                                  ),
+                                  title: Text(comment.name ?? 'unknown'),
+                                  subtitle: Column(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: [
+                                      Text(comment.user_reviews ),
+                                      Text(comment.rating_date),
+                                    ],
+                                  ),
+                                );
+                              },
+
+                            ),
+                          );
+                        }
+                        if(snapshot.hasError){
+                          return Text("failed to laod data");
+                        }
+                        return CircularProgressIndicator();
+                      },
+
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: TextFormField(
+                        controller: txtController,
+                        cursorColor: Colors.black,
+                        maxLines: 10,
+                        minLines: 8,
+                        style: const TextStyle(
+                          color: Colors.black,
+                        ),
+                        decoration: InputDecoration(
+                            hintText: "Type your comment here...",
+                            contentPadding: const EdgeInsets.all(10.0),
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(10.0),
+                            )),
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.only(
+                          right: 20.0, top: 8.0, bottom: 20.0),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        children: [
+                          ElevatedButton(
+                            onPressed: () {
+                              setState(() {
+
+                              });
+                              _saveComment();
+                            },
+                            child: Text('Submit'),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                );
+              }
+              if (snapshot.hasError) {
+                return const Text('Failed to load data');
+              }
+              return const CircularProgressIndicator();
+            },
+          ),
         ),
       ),
     );
   }
+  @override
+  void dispose() {
+    txtController.dispose();
+    super.dispose();
+  }
+  void _saveComment() async{
+    final bookComment = BookComment(
+      book_id: id,
+      user_id: 1000,
+      rating_date: getFormattedDate(DateTime.now(), dateTimePattern),
+      user_reviews: txtController.text,
+      name: 'Admin',
+    );
+    commentProvider.insertRating(bookComment);
+    setState(() {
+      txtController.clear();
+    });
+  }
+
+  // void _deleteBook(BuildContext context, int id, BookProvider provider) {
+  //   showDialog(
+  //     context: context,
+  //     builder: (context) => AlertDialog(
+  //       title: const Text('Delete this book'),
+  //       content: const Text('Are you sure to delete this book?'),
+  //       actions: [
+  //         TextButton(
+  //           onPressed: (){
+  //             Navigator.pop(context);
+  //           },
+  //           child: const Text('No'),
+  //         ),
+  //         TextButton(
+  //           onPressed: () {
+  //             Navigator.pop(context);
+  //             provider.deleteBook(id).then((value) {
+  //               Navigator.pop(context);
+  //               provider.getAllBooks();
+  //             });
+  //           },
+  //           child: const Text("Yes"),
+  //         ),
+  //       ],
+  //     ),
+  //   );
+  // }
 }

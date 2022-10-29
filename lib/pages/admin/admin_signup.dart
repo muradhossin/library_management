@@ -1,7 +1,11 @@
-import 'dart:io';
 import 'package:flutter/material.dart';
-import 'package:image_picker/image_picker.dart';
+import 'package:library_management/models/admin_model.dart';
+import 'package:library_management/pages/admin/admin_login_page.dart';
+import 'package:library_management/providers/admin_provider.dart';
+import 'package:library_management/utils/helper_functions.dart';
+import 'package:provider/provider.dart';
 
+import '../../utils/constants.dart';
 import '../login_page.dart';
 
 class AdminSignup extends StatefulWidget {
@@ -15,213 +19,217 @@ class AdminSignup extends StatefulWidget {
 
 class _AdminSignupState extends State<AdminSignup> {
   bool _isObsecure = true;
-  String? imagePath;
+  String errMsg = '';
+  final _formKey = GlobalKey<FormState>();
+  final nameController = TextEditingController();
+  final emailController = TextEditingController();
+  // final phoneNumberController = TextEditingController();
+  final passwordController = TextEditingController();
+  final confirmPasswordController = TextEditingController();
+  final adminReferralCodeController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
-
     return Scaffold(
       appBar: AppBar(
-        title:const Text("Sign Up"),
+        title: Text("Admin Sign Up"),
       ),
-      body: Form(
-        child: ListView(
-          children: [
-            Padding(
-              padding: const EdgeInsets.all(9.0),
-              child: TextFormField(
-                style:const TextStyle(
-                    color: Colors.black,
-                    fontFamily: 'SFUIDisplay'
-                ),
-                decoration: InputDecoration(
-                    hintText: 'Enter Name',
-                    labelText: 'Enter Name',
-                    labelStyle:const TextStyle(
-                        fontSize: 15
-                    ),
+      body: SingleChildScrollView(
+        child: Form(
+          key: _formKey,
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: TextFormField(
+                  controller: nameController,
+                  decoration: InputDecoration(
                     border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(10),
-                        borderSide:
-                        BorderSide(color: Colors.blue, width: 1))),
-                validator: (value) {
-                  if(value == null || value.isEmpty) {
-                    return 'This field must not be empty';
-                  }
-                  return null;
-                },
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.all(9.0),
-              child: TextFormField(
-                style:const TextStyle(
-                    color: Colors.black,
-                    fontFamily: 'SFUIDisplay'
+                      borderRadius: BorderRadius.circular(20.0),
+                    ),
+                    hintText: 'Your Name',
+                    labelText: 'Your Name',
+                  ),
+                  validator: (value) {
+                    if(value == null || value.isEmpty){
+                      return 'Name is required';
+                    }
+                    return null;
+                  },
                 ),
-                decoration: InputDecoration(
+              ),
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: TextFormField(
+                  controller: emailController,
+                  decoration: InputDecoration(
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(20.0),
+                    ),
                     hintText: 'Email Address',
                     labelText: 'Email Address',
-                    labelStyle:const TextStyle(
-                        fontSize: 15
-                    ),
-                    border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(8),
-                        borderSide:
-                        BorderSide(color: Colors.blue, width: 1))),
-                validator: (value) {
-                  if(value == null || value.isEmpty) {
-                    return 'This field must not be empty';
-                  }
-                  return null;
-                },
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.all(9.0),
-              child: TextFormField(
-                style:const TextStyle(
-                    color: Colors.black,
-                    fontFamily: 'SFUIDisplay'
-                ),
-                decoration: InputDecoration(
-                    hintText: 'Phone Number',
-                    labelText: 'Phone Number',
-                    labelStyle:const TextStyle(
-                        fontSize: 15
-                    ),
-                    border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(10),
-                        borderSide:
-                        BorderSide(color: Colors.blue, width: 1))),
-                validator: (value) {
-                  if(value == null || value.isEmpty) {
-                    return 'This field must not be empty';
-                  }
-                  return null;
-                },
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.all(9.0),
-              child: TextFormField(
-                style:const TextStyle(
-                    color: Colors.black,
-                    fontFamily: 'SFUIDisplay'
-                ),
-                decoration: InputDecoration(
-                   prefixIcon: Icon(Icons.calendar_today),
-                    iconColor: Colors.black, //icon of text field
-                    hintText: 'Birth of Date',
-                    labelText: 'Birth of Date',
-                    labelStyle:const TextStyle(
-                        fontSize: 15
-                    ),
-                    border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(10),
-                        borderSide:
-                        BorderSide(color: Colors.blue, width: 1))),
-                validator: (value) {
-                  if(value == null || value.isEmpty) {
-                    return 'This field must not be empty';
-                  }
-                  return null;
-                },
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: TextFormField(
-                obscureText: _isObsecure,
-                obscuringCharacter: "*",
-                decoration: InputDecoration(
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(9.0),
-                    ),
-                    hintText: 'Password',
-                    labelText: 'Password',
-                    suffixIcon: IconButton(
-                      icon: Icon(_isObsecure
-                          ? Icons.visibility
-                          : Icons.visibility_off),
-                      onPressed: () {
-                        setState(() {
-                          _isObsecure = !_isObsecure;
-                        });
-                      },
-                    )),
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: TextFormField(
-                obscureText: _isObsecure,
-                obscuringCharacter: "*",
-                decoration: InputDecoration(
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(9.0),
-                    ),
-                    hintText: 'Confirm Password',
-                    labelText: 'Confirm Password',
-                    suffixIcon: IconButton(
-                      icon: Icon(_isObsecure
-                          ? Icons.visibility
-                          : Icons.visibility_off),
-                      onPressed: () {
-                        setState(() {
-                          _isObsecure = !_isObsecure;
-                        });
-                      },
-                    )),
-                validator: (value) {
-                  if(value == null || value.isEmpty) {
-                    return 'This field must not be empty';
-                  }
-                  return null;
-                },
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: TextFormField(
-                decoration: InputDecoration(
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(9.0),
                   ),
-                  hintText: 'admin referral code',
-                  labelText: 'admin referral code',
+                  validator: (value) {
+                    if(value == null || value.isEmpty){
+                      return 'Email is required';
+                    }
+                    return null;
+                  },
                 ),
               ),
-            ),
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  imagePath == null ? const Icon(Icons.movie, size: 100,) :
-                  Image.file(File(imagePath!), width: 100, height: 100, fit: BoxFit.cover,),
-                  TextButton.icon(
-                    onPressed: null,
-                    icon: const Icon(Icons.photo),
-                    label: const Text('Select Profile Picture'),
-                  )
-                ],
+              // Padding(
+              //   padding: const EdgeInsets.all(8.0),
+              //   child: TextFormField(
+              //     controller: phoneNumberController,
+              //     decoration: InputDecoration(
+              //       border: OutlineInputBorder(
+              //         borderRadius: BorderRadius.circular(20.0),
+              //       ),
+              //       hintText: 'Phone Number',
+              //       labelText: 'Phone Number',
+              //     ),
+              //   ),
+              // ),
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: TextFormField(
+                  controller: passwordController,
+                  obscureText: _isObsecure,
+                  obscuringCharacter: "*",
+                  decoration: InputDecoration(
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(20.0),
+                      ),
+                      hintText: 'Password',
+                      labelText: 'Password',
+                      suffixIcon: IconButton(
+                        icon: Icon(_isObsecure
+                            ? Icons.visibility
+                            : Icons.visibility_off),
+                        onPressed: () {
+                          setState(() {
+                            _isObsecure = !_isObsecure;
+                          });
+                        },
+                      ),
+                  ),
+                  validator: (value) {
+                    if(value == null || value.isEmpty){
+                      return 'Password is required';
+                    }
+                    return null;
+                  },
+                ),
+
               ),
-            ),
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Center(
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: TextFormField(
+                  controller: confirmPasswordController,
+                  obscureText: _isObsecure,
+                  obscuringCharacter: "*",
+                  decoration: InputDecoration(
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(20.0),
+                      ),
+                      hintText: 'Confirm Password',
+                      labelText: 'Confirm Password',
+                      suffixIcon: IconButton(
+                        icon: Icon(_isObsecure
+                            ? Icons.visibility
+                            : Icons.visibility_off),
+                        onPressed: () {
+                          setState(() {
+                            _isObsecure = !_isObsecure;
+                          });
+                        },
+                      ),
+                  ),
+                  validator: (value) {
+                    if(value == null || value.isEmpty){
+                      return 'Confirm Password is required';
+                    }
+                    return null;
+                  },
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: TextFormField(
+                  controller: adminReferralCodeController,
+                  decoration: InputDecoration(
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(20.0),
+                    ),
+                    hintText: 'admin referral code',
+                    labelText: 'admin referral code',
+                  ),
+                  validator: (value) {
+                    if(value == null || value.isEmpty){
+                      return 'Admin Referral Code is required';
+                    }
+                    return null;
+                  },
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.all(8.0),
                 child: ElevatedButton(
-                  onPressed: (){
-                    Navigator.pushNamed(context, LoginPage.routeName);
+                  onPressed: () {
+                    _authenticate();
                   },
                   child: const Text("Sign Up"),
                 ),
               ),
-            ),
-          ],
+              SizedBox(height: 10,),
+              Text(errMsg),
+            ],
+          ),
         ),
       ),
     );
+  }
+
+  _authenticate() async {
+    final provider = Provider.of<AdminProvider>(context, listen: false);
+    if (_formKey.currentState!.validate()) {
+      final name = nameController.text;
+      final email = emailController.text;
+      // final phoneNumber = phoneNumberController.text;
+      final password = passwordController.text;
+      final confirmPassword = confirmPasswordController.text;
+      final adminReferralCode = adminReferralCodeController.text;
+
+      final admin = await provider.getAdminByEmail(email);
+      if(password == confirmPassword){
+        if(adminReferralCodeList.contains(adminReferralCode)){
+          if (admin != null) {
+            _setErrorMsg("Admin already exists");
+          } else {
+            final admin = AdminModel(
+              name: name,
+              email: email,
+              password: password,
+              confirmPassword: confirmPassword,
+              referral: adminReferralCode,
+            );
+            provider.insertNewAdmin(admin);
+            Navigator.pushReplacementNamed(context, AdminLoginPage.routeName);
+          }
+        }else{
+          _setErrorMsg('Admin Referral code do not match');
+        }
+      }else{
+        _setErrorMsg('Passwords do not match');
+      }
+
+    }
+  }
+
+  _setErrorMsg(String msg) {
+    setState(() {
+      errMsg = msg;
+    });
   }
 }
