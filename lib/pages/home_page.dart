@@ -13,7 +13,7 @@ class HomePage extends StatelessWidget {
     DbHelper.open();
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Home Page'),
+        title: const Text('Library management system'),
       ),
       body: Center(
         child: Column(
@@ -23,16 +23,18 @@ class HomePage extends StatelessWidget {
               onPressed: (){
                 Navigator.pushNamed(context, UserLoginPage.routeName);
               },
-              child: const Text('User Panel'),
+              child: const Text('Are you looking for books?'),
             ),
             const SizedBox(height: 10,),
             ElevatedButton(
               onPressed: (){
                 Navigator.pushNamed(context, AdminLoginPage.routeName);
               },
-              child: const Text('Admin Panel'),
+              child: const Text('Administration panel'),
             ),
+
           ],
+          
         ),
       ),
     );

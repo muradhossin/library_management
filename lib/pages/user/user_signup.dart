@@ -32,7 +32,7 @@ class _UserSignupState extends State<UserSignup> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Create new account'),
+        title: const Text('User Sign Up'),
       ),
       body: SingleChildScrollView(
         child: Form(

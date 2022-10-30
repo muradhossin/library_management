@@ -26,7 +26,7 @@ class _UserLoginPageState extends State<UserLoginPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('User Login Page'),
+        title: const Text('User Login'),
       ),
       body: Center(
         child: Form(
