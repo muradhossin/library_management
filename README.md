@@ -77,7 +77,7 @@ To run the app, simply write
 
 **State Management:** Provider
 
-**backend:** Sqflite
+**Backend:** Sqflite
 
 
 
